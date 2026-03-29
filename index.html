@@ -21,19 +21,12 @@
 html{scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:hidden;line-height:1.7}
 
-/* PROMO BAR */
-.promo-bar{background:linear-gradient(135deg,var(--gold),var(--orange));padding:11px 2rem;text-align:center;font-size:13.5px;font-weight:700;color:#fff;letter-spacing:.3px}
-.promo-bar a{color:#fff;text-decoration:underline;margin-left:6px}
-
 /* NAV */
-.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;transition:var(--tr)}
-.nav.on{background:rgba(9,9,15,.96);backdrop-filter:blur(14px);box-shadow:0 2px 24px rgba(0,0,0,.45)}
-.nav-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:68px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo img{height:42px;filter:brightness(1.1)}
-.logo-fb{display:none;flex-direction:column}
-.logo-n{font-family:var(--fh);font-size:14.5px;font-weight:700;color:#fff}
-.logo-s{font-size:10px;color:var(--gold-l);letter-spacing:1.8px;text-transform:uppercase}
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;transition:var(--tr);background:rgba(9,9,15,.96);backdrop-filter:blur(14px);box-shadow:0 2px 24px rgba(0,0,0,.45)}
+.nav-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:70px}
+.logo{display:flex;align-items:center;text-decoration:none}
+.logo img{height:60px;width:auto;filter:brightness(1.1);object-fit:contain}
+.logo-fb{display:none}
 .nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none}
 .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:500;transition:var(--tr);position:relative;white-space:nowrap}
 .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:100%;height:1.5px;background:var(--gold);transition:right var(--tr)}
@@ -50,7 +43,7 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
 .particles{position:absolute;inset:0;overflow:hidden}
 .particle{position:absolute;border-radius:50%;background:var(--gold);opacity:0;animation:floatp linear infinite}
 @keyframes floatp{0%{opacity:0;transform:translateY(0) scale(0)}20%{opacity:.4}80%{opacity:.15}100%{opacity:0;transform:translateY(-600px) scale(0)}}
-.h-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:110px 2rem 80px;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.h-inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;padding:100px 2rem 80px;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
 .h-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,151,58,.14);border:1px solid rgba(201,151,58,.3);border-radius:24px;padding:6px 16px;font-size:11px;font-weight:700;color:var(--gold-l);letter-spacing:1px;text-transform:uppercase;margin-bottom:1.2rem;animation:fup .8s ease both}
 .bdot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:pdot 1.5s ease infinite}
 @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.6)}}
@@ -105,14 +98,14 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
 
     /* COURSES */
     .courses-bg{background:var(--g100)}
-    .ctabs{display:flex;justify-content:center;gap:.45rem;margin-bottom:2.6rem;flex-wrap:wrap}
+    .ctabs{display:flex;justify(center;gap:.45rem;margin-bottom:2.6rem;flex-wrap:wrap}
     .ctab{padding:9px 20px;border-radius:50px;border:1.5px solid var(--g200);background:#fff;color:var(--g600);font-size:13px;font-weight:600;cursor:pointer;transition:var(--tr);font-family:var(--fb)}
     .ctab:hover,.ctab.active{background:linear-gradient(135deg,var(--gold),var(--orange));color:#fff;border-color:transparent;box-shadow:0 4px 14px rgba(201,151,58,.35)}
     .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem}
     .cc{background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--scard);transition:var(--tr);border:1px solid rgba(0,0,0,.06);cursor:pointer}
     .cc:hover{transform:translateY(-7px);box-shadow:0 20px 50px rgba(0,0,0,.16)}
-    .cthumb{position:relative;overflow:hidden;background:var(--deep)}
-    .cthumb img{width:100%;height:auto;display:block}
+    .cthumb{height:185px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:3.5rem}
+    .cthumb img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
     .ctag{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;z-index:1}
     .tag-h{background:#e53935;color:#fff}
     .tag-n{background:var(--gold);color:#fff}
@@ -294,21 +287,11 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
 </head>
 <body>
 
-<div class="promo-bar">
-  🎁 Tặng ngay Voucher 1–2 triệu + Sản phẩm cuối khóa 5 triệu khi đăng ký hôm nay!
-  <a href="#contact">Đăng ký ngay →</a>
-</div>
-
-<nav class="nav" id="nav" style="top:40px">
+<nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="#" class="logo">
-      <img src="https://taynguyenfilm.edu.vn/image/catalog/logo/logo-tay-nguyem-film.png"
-           alt="Công Ty Tây Nguyên Phim"
-           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-      <div class="logo-fb">
-        <span class="logo-n">Tây Nguyên Phim</span>
-        <span class="logo-s">Entertainment</span>
-      </div>
+      <img src="https://taynguyenfilm.edu.vn/image/catalog/logo/logo-tay-nguyem-film.png" alt="Công Ty Tây Nguyên Phim">
+      <div class="logo-fb"></div>
     </a>
     <ul class="nav-links" id="navL">
       <li><a href="#home">Trang Chủ</a></li>
@@ -399,7 +382,7 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
     <div class="cgrid" id="cg">
 
       <div class="cc reveal" data-cat="mc">
-        <div class="cthumb"><img src="https://taynguyenfilm.edu.vn/image/cache/catalog/POSTER/Thumb%20web%20edu/1-522x200.jpg" alt="Đào Tạo MC Chuyên Nghiệp">
+        <div class="cthumb"><img src="https://taynguyenfilm.edu.vn/image/catalog/POSTER/5.4/2.jpg" alt="Đào Tạo MC Chuyên Nghiệp">
         <div class="ctag tag-h">HOT · 3 suất</div></div>
         <div class="cbody"><div class="ccat">Kỹ Năng & MC</div>
         <div class="cname">Đào Tạo MC Chuyên Nghiệp</div>
@@ -943,22 +926,11 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
 <div class="toast" id="toast"></div>
 
 <script>
-// Offset nav for promo bar
-window.addEventListener('scroll', () => {
-  const n = document.getElementById('nav');
-  if(scrollY > 55){
-    n.classList.add('on');
-    n.style.top = '0';
-  } else {
-    n.classList.remove('on');
-    n.style.top = '40px';
-  }
-});
-
+// Mobile Nav Toggle
 function toggleNav(){document.getElementById('navL').classList.toggle('open')}
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navL').classList.remove('open')));
 
-// Particles
+// Particles Effect
 (function(){
   const c=document.getElementById('particles');
   for(let i=0;i<28;i++){
@@ -969,18 +941,18 @@ document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',
   }
 })();
 
-// Reveal
+// Scroll Reveal Effect
 const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
 document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
-// Filter
+// Course Filter
 function fc(cat,btn){
   document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.cc').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none'});
 }
 
-// Modal
+// Modal Functions
 function openM(course){
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow='hidden';
@@ -993,7 +965,7 @@ function openM(course){
 function closeM(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
 function closeBg(e){if(e.target===document.getElementById('modal'))closeM()}
 
-// Forms
+// Form Submissions (Simulated)
 function subReg(){
   const n=document.getElementById('m-name').value.trim();
   const p=document.getElementById('m-phone').value.trim();
@@ -1015,14 +987,14 @@ function subContact(){
   document.getElementById('cf-course').selectedIndex=0;
 }
 
-// Toast
+// Toast Notification
 function toast(msg,ok=true){
   const t=document.getElementById('toast');
   t.textContent=msg;t.className='toast '+(ok?'ok':'err');t.classList.add('show');
   setTimeout(()=>t.classList.remove('show'),5000);
 }
 
-// Popup
+// Discount Popup
 setTimeout(()=>document.getElementById('popup').classList.add('show'),5000);
 function closePopup(){document.getElementById('popup').classList.remove('show')}
 function copyCode(){
@@ -1030,7 +1002,7 @@ function copyCode(){
   toast('✅ Đã sao chép mã: TAYNGUYENPHIM',true);
 }
 
-// Countdown
+// Countdown Timer
 (function(){
   const end=new Date();end.setDate(end.getDate()+7);end.setHours(end.getHours()+14);
   function pad(n){return String(n).padStart(2,'0')}
