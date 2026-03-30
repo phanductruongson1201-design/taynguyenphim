@@ -34,7 +34,6 @@
   
   .badge { padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
   .badge-new { background: #e3f2fd; color: var(--gold); }
-  .badge-done { background: #e8f5e9; color: #2e7d32; }
 </style>
 </head>
 <body>
@@ -43,9 +42,7 @@
     <div class="logo-admin">TNP ADMIN</div>
     <ul class="nav-menu">
       <li><a href="#" class="active">📋 Danh sách đăng ký</a></li>
-      <li><a href="#">🎬 Quản lý khóa học</a></li>
-      <li><a href="#">⚙️ Cài đặt hệ thống</a></li>
-      <li><a href="/" style="margin-top: 50px; color: #e53935;">🔙 Quay lại trang chủ</a></li>
+      <li><a href="/">🔙 Quay lại trang chủ</a></li>
     </ul>
   </div>
 
@@ -68,26 +65,75 @@
               <th>Trạng thái</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><strong>Nguyễn Văn A</strong></td>
-              <td>0905 123 456</td>
-              <td>Đào Tạo MC Chuyên Nghiệp</td>
-              <td>10 phút trước</td>
-              <td><span class="badge badge-new">MỚI</span></td>
-            </tr>
-            <tr>
-              <td><strong>Trần Thị B</strong></td>
-              <td>0932 987 654</td>
-              <td>Khóa Học Hát Chuyên Nghiệp</td>
-              <td>2 giờ trước</td>
-              <td><span class="badge badge-done">ĐÃ LIÊN HỆ</span></td>
-            </tr>
+          <tbody id="student-list">
+            <tr><td colspan="5" style="text-align:center;">⏳ Đang tải dữ liệu từ Firebase...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+    // Chìa khóa cấu hình của bạn
+    const firebaseConfig = {
+      apiKey: "AIzaSyA4mM5GhVzMtlCiymFrKgfjR6n3f2X85yE",
+      authDomain: "taynguyenphim-web.firebaseapp.com",
+      projectId: "taynguyenphim-web",
+      storageBucket: "taynguyenphim-web.firebasestorage.app",
+      messagingSenderId: "608085042835",
+      appId: "1:608085042835:web:da3a8c05fe79d6cf970f66"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const tbody = document.getElementById('student-list');
+
+    // Lệnh truy vấn: Lấy từ bảng "hoc_vien", sắp xếp theo ngày tạo mới nhất lên đầu
+    const q = query(collection(db, "hoc_vien"), orderBy("ngay_tao", "desc"));
+
+    // Lắng nghe dữ liệu real-time
+    onSnapshot(q, (snapshot) => {
+      tbody.innerHTML = ''; // Xóa dòng chữ "Đang tải..."
+      
+      if (snapshot.empty) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Chưa có dữ liệu đăng ký nào.</td></tr>';
+        return;
+      }
+
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        
+        // Định dạng lại ngày giờ cho đẹp kiểu Việt Nam
+        let timeString = "Vừa xong";
+        if (data.ngay_tao) {
+          const date = data.ngay_tao.toDate();
+          timeString = date.toLocaleString('vi-VN');
+        }
+
+        // Tạo dòng HTML mới cho mỗi học viên
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <strong>${data.ho_ten || 'Không tên'}</strong><br>
+            <small style="color:#7a9bbf">${data.email || 'Không có email'}</small>
+          </td>
+          <td style="font-weight: bold; color: var(--deep)">${data.so_dien_thoai || ''}</td>
+          <td>
+            ${data.khoa_hoc || 'Chưa chọn'}<br>
+            <small style="color:#7a9bbf">Nguồn: ${data.nguon || ''}</small>
+          </td>
+          <td>${timeString}</td>
+          <td><span class="badge badge-new">MỚI</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }, (error) => {
+        console.error("Lỗi khi tải dữ liệu:", error);
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:red;">Lỗi tải dữ liệu. Hãy kiểm tra lại kết nối.</td></tr>';
+    });
+  </script>
 </body>
 </html>
