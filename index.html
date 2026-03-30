@@ -1031,5 +1031,110 @@ function copyCode(){
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
 </script>
+<script type="module">
+  // 1. Nhập thư viện Firebase
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+  // 2. Chìa khóa cấu hình của bạn
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4mM5GhVzMtlCiymFrKgfjR6n3f2X85yE",
+    authDomain: "taynguyenphim-web.firebaseapp.com",
+    projectId: "taynguyenphim-web",
+    storageBucket: "taynguyenphim-web.firebasestorage.app",
+    messagingSenderId: "608085042835",
+    appId: "1:608085042835:web:da3a8c05fe79d6cf970f66"
+  };
+
+  // 3. Khởi động kết nối
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 4. Viết lại hàm đăng ký ở Popup (Modal) để đẩy dữ liệu lên mây
+  window.subReg = async function() {
+    const n = document.getElementById('m-name').value.trim();
+    const p = document.getElementById('m-phone').value.trim();
+    const a = document.getElementById('m-age').value.trim();
+    const e = document.getElementById('m-email').value.trim();
+    const c = document.getElementById('m-course').value;
+    const l = document.getElementById('m-level').value;
+
+    if(!n){ toast('Vui lòng nhập họ tên!', false); return; }
+    if(!p || p.length < 9){ toast('Vui lòng nhập SĐT hợp lệ!', false); return; }
+    if(!c){ toast('Vui lòng chọn khóa học!', false); return; }
+
+    // Đổi chữ nút thành "Đang gửi..." để người dùng biết
+    const btn = document.querySelector('#modal .bp');
+    const oldText = btn.innerHTML;
+    btn.innerHTML = '⏳ Đang xử lý...';
+    btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, "hoc_vien"), {
+        ho_ten: n,
+        so_dien_thoai: p,
+        tuoi: a,
+        email: e,
+        khoa_hoc: c,
+        trinh_do: l,
+        nguon: "Popup Đăng Ký",
+        ngay_tao: serverTimestamp()
+      });
+
+      closeM();
+      toast('🎉 Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm.', true);
+      
+      // Xóa form
+      ['m-name','m-phone','m-age','m-email'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('m-course').selectedIndex = 0;
+      document.getElementById('m-level').selectedIndex = 0;
+    } catch (error) {
+      console.error("Lỗi: ", error);
+      toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
+    } finally {
+      // Trả lại nút như cũ
+      btn.innerHTML = oldText;
+      btn.disabled = false;
+    }
+  };
+
+  // 5. Viết lại hàm đăng ký ở Form Liên hệ (Footer)
+  window.subContact = async function() {
+    const n = document.getElementById('cf-name').value.trim();
+    const p = document.getElementById('cf-phone').value.trim();
+    const e = document.getElementById('cf-email').value.trim();
+    const c = document.getElementById('cf-course').value;
+    const msg = document.getElementById('cf-msg').value.trim();
+
+    if(!n || !p){ toast('Vui lòng nhập họ tên và số điện thoại!', false); return; }
+
+    const btn = document.querySelector('.cform .bp');
+    const oldText = btn.innerHTML;
+    btn.innerHTML = '⏳ Đang gửi...';
+    btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, "hoc_vien"), {
+        ho_ten: n,
+        so_dien_thoai: p,
+        email: e,
+        khoa_hoc: c,
+        loi_nhan: msg,
+        nguon: "Form Liên Hệ",
+        ngay_tao: serverTimestamp()
+      });
+
+      toast('✅ Đã gửi! Chúng tôi sẽ liên hệ sớm nhất.', true);
+      ['cf-name','cf-phone','cf-email','cf-msg'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('cf-course').selectedIndex = 0;
+    } catch (error) {
+      console.error("Lỗi: ", error);
+      toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
+    } finally {
+      btn.innerHTML = oldText;
+      btn.disabled = false;
+    }
+  };
+</script>
 </body>
 </html>
