@@ -35,6 +35,10 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Đổ bóng nhẹ giúp logo nổi khối lên */
   transition: var(--tr); /* Thêm hiệu ứng chuyển động mượt mà */
 }
+.logo:hover img {
+  transform: translateY(-4px); /* Nhấc logo nảy nhẹ lên 4px */
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.4); /* Toả hào quang phát sáng */
+}
 .logo-fb{display:none}
 .nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none}
 .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:500;transition:var(--tr);position:relative;white-space:nowrap}
