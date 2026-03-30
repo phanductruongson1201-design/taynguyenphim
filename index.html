@@ -25,7 +25,16 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
 .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 2rem;transition:var(--tr);background:rgba(3,8,15,.97);backdrop-filter:blur(14px);box-shadow:0 2px 24px rgba(0,0,0,.45)}
 .nav-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:70px}
 .logo{display:flex;align-items:center;text-decoration:none}
-.logo img{height:60px;width:auto;filter:brightness(1.1);object-fit:contain}
+.logo img {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  background: #ffffff; /* Lót nền trắng tinh */
+  padding: 6px 14px; /* Tạo khoảng cách cho logo thở, không bị lẹm vào viền */
+  border-radius: 8px; /* Bo góc mềm mại cho hiện đại */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Đổ bóng nhẹ giúp logo nổi khối lên */
+  transition: var(--tr); /* Thêm hiệu ứng chuyển động mượt mà */
+}
 .logo-fb{display:none}
 .nav-links{display:flex;align-items:center;gap:1.5rem;list-style:none}
 .nav-links a{color:rgba(255,255,255,.8);text-decoration:none;font-size:13px;font-weight:500;transition:var(--tr);position:relative;white-space:nowrap}
