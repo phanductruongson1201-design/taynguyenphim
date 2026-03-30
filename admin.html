@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Tây Nguyên Phim</title>
+<style>
+  :root {
+    --gold: #1a6fc4; --deep: #071524; --white: #ffffff; --g100: #f0f5fc;
+    --text: #071524; --tr: 0.3s ease;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+  body { display: flex; height: 100vh; background: var(--g100); color: var(--text); }
+  
+  /* SIDEBAR */
+  .sidebar { width: 250px; background: var(--deep); color: var(--white); display: flex; flex-direction: column; }
+  .logo-admin { padding: 20px; font-size: 1.2rem; font-weight: bold; border-bottom: 1px solid rgba(255,255,255,0.1); text-align: center; color: var(--gold); }
+  .nav-menu { list-style: none; padding: 20px 0; flex: 1; }
+  .nav-menu li a { display: block; padding: 15px 25px; color: rgba(255,255,255,0.7); text-decoration: none; transition: var(--tr); }
+  .nav-menu li a:hover, .nav-menu li a.active { background: var(--gold); color: var(--white); border-left: 4px solid #5aaff5; }
+  
+  /* MAIN CONTENT */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  .header { height: 70px; background: var(--white); display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+  .content { padding: 30px; overflow-y: auto; }
+  
+  /* CARD & TABLE */
+  .card { background: var(--white); border-radius: 10px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+  .card h2 { margin-bottom: 20px; font-size: 1.2rem; color: var(--deep); }
+  table { width: 100%; border-collapse: collapse; text-align: left; }
+  th, td { padding: 15px; border-bottom: 1px solid #eee; font-size: 14px; }
+  th { color: #7a9bbf; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+  tr:hover { background: var(--g100); }
+  
+  .badge { padding: 5px 10px; border-radius: 20px; font-size: 11px; font-weight: bold; }
+  .badge-new { background: #e3f2fd; color: var(--gold); }
+  .badge-done { background: #e8f5e9; color: #2e7d32; }
+</style>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="logo-admin">TNP ADMIN</div>
+    <ul class="nav-menu">
+      <li><a href="#" class="active">📋 Danh sách đăng ký</a></li>
+      <li><a href="#">🎬 Quản lý khóa học</a></li>
+      <li><a href="#">⚙️ Cài đặt hệ thống</a></li>
+      <li><a href="/" style="margin-top: 50px; color: #e53935;">🔙 Quay lại trang chủ</a></li>
+    </ul>
+  </div>
+
+  <div class="main">
+    <div class="header">
+      <h3 style="color: var(--gold);">Tổng quan hệ thống</h3>
+      <div>Chào, <strong>Admin</strong>!</div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <h2>Học viên mới đăng ký tư vấn</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Họ và tên</th>
+              <th>Số điện thoại</th>
+              <th>Khóa học quan tâm</th>
+              <th>Thời gian</th>
+              <th>Trạng thái</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nguyễn Văn A</strong></td>
+              <td>0905 123 456</td>
+              <td>Đào Tạo MC Chuyên Nghiệp</td>
+              <td>10 phút trước</td>
+              <td><span class="badge badge-new">MỚI</span></td>
+            </tr>
+            <tr>
+              <td><strong>Trần Thị B</strong></td>
+              <td>0932 987 654</td>
+              <td>Khóa Học Hát Chuyên Nghiệp</td>
+              <td>2 giờ trước</td>
+              <td><span class="badge badge-done">ĐÃ LIÊN HỆ</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
