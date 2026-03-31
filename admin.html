@@ -7,10 +7,8 @@
   
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  
   <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
     (function(){ emailjs.init({ publicKey: "MÃ_PUBLIC_KEY_CỦA_BẠN" }); })();
@@ -34,6 +32,10 @@
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     .ql-toolbar { background: #f8fafc; border-top-left-radius: 0.5rem; border-top-right-radius: 0.5rem; }
     .ql-container { background: #ffffff; border-bottom-left-radius: 0.5rem; border-bottom-right-radius: 0.5rem; }
+
+    /* Custom CSS cho thanh Select Trạng Thái */
+    .status-select { appearance: none; background-image: none; cursor: pointer; text-align: center; font-weight: 600; transition: all 0.2s; }
+    .status-select:hover { filter: brightness(0.95); }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-brand-950 text-slate-800 dark:text-slate-200 h-screen overflow-hidden flex tr-smooth">
@@ -42,7 +44,7 @@
     <div class="h-16 flex items-center justify-between px-6 border-b border-slate-800"><div class="flex items-center gap-2 text-white font-bold text-lg tracking-wide"><i class="ph-fill ph-film-strip text-brand-500 text-2xl"></i><span>TNP <span class="text-brand-500">ADMIN</span></span></div><button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button></div>
     <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
       <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-3">Quản lý</div>
-      <a href="#" id="menu-students" onclick="switchView('students', 'Tổng quan hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 bg-brand-600 text-white rounded-lg shadow-md shadow-brand-600/20 group tr-smooth"><i class="ph ph-users text-lg"></i><span class="font-medium text-sm">Học viên đăng ký</span></a>
+      <a href="#" id="menu-students" onclick="switchView('students', 'Quản lý đăng ký')" class="menu-item flex items-center gap-3 px-3 py-2.5 bg-brand-600 text-white rounded-lg shadow-md shadow-brand-600/20 group tr-smooth"><i class="ph ph-users text-lg"></i><span class="font-medium text-sm">Học viên đăng ký</span></a>
       <a href="#" id="menu-courses" onclick="switchView('courses', 'Quản lý Khóa học')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth"><i class="ph ph-graduation-cap text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Khóa học</span></a>
       <a href="#" id="menu-emails" onclick="switchView('emails', 'Chiến dịch Email')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth"><i class="ph ph-envelope-simple text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Chiến dịch Email</span></a>
       <div class="mt-6 mb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Hệ thống</div>
@@ -54,29 +56,74 @@
 
   <main class="flex-1 flex flex-col h-full overflow-hidden relative">
     <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10 tr-smooth">
-      <div class="flex items-center gap-4"><button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-brand-600"><i class="ph ph-list text-2xl"></i></button><h1 id="page-title" class="text-xl font-bold text-slate-800 dark:text-white hidden sm:block">Tổng quan hệ thống</h1></div>
+      <div class="flex items-center gap-4">
+        <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-brand-600"><i class="ph ph-list text-2xl"></i></button>
+        <h1 id="page-title" class="text-xl font-bold text-slate-800 dark:text-white hidden sm:block flex items-center gap-2"><i class="ph-fill ph-calendar-check text-slate-400"></i> Quản lý đăng ký</h1>
+      </div>
       <div class="flex items-center gap-3 sm:gap-5">
-        <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 tr-smooth"><i id="theme-icon" class="ph ph-moon text-lg"></i></button>
-        <div class="flex items-center gap-3 cursor-pointer"><div class="text-right hidden sm:block"><div class="text-sm font-semibold text-slate-800 dark:text-white">Admin TNP</div><div class="text-xs text-slate-500 dark:text-slate-400">Super Admin</div></div><img src="https://ui-avatars.com/api/?name=Admin&background=2563eb&color=fff" alt="Avatar" class="w-9 h-9 rounded-full ring-2 ring-white dark:ring-slate-800 shadow-sm"></div>
+        <div class="text-sm font-medium text-slate-500 hidden md:block" id="top-date">Hôm nay</div>
+        <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 tr-smooth"><i id="theme-icon" class="ph ph-moon text-lg"></i></button>
+        <button class="w-9 h-9 flex items-center justify-center rounded-full bg-brand-600 text-white hover:bg-brand-700 tr-smooth" title="Thêm mới thủ công"><i class="ph ph-plus text-lg"></i></button>
       </div>
     </header>
 
-    <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+    <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-slate-50 dark:bg-brand-950">
       
       <div id="view-students" class="view-panel block fade-in">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-brand-600 flex items-center justify-center text-2xl"><i class="ph-fill ph-users"></i></div><div><p class="text-sm text-slate-500 font-medium">Tổng học viên</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-total">0</h3></div></div>
-          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 flex items-center justify-center text-2xl"><i class="ph-fill ph-trend-up"></i></div><div><p class="text-sm text-slate-500 font-medium">Đăng ký hôm nay</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-today">0</h3></div></div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-2">
+            <div class="w-12 h-12 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 flex items-center justify-center text-2xl"><i class="ph-fill ph-clipboard-text"></i></div>
+            <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-2" id="stat-total">0</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Tổng đăng ký</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-2">
+            <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-2xl"><i class="ph-fill ph-hourglass-high"></i></div>
+            <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-2" id="stat-pending">0</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Chờ xử lý</p>
+          </div>
+          <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col gap-2">
+            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-500 flex items-center justify-center text-2xl"><i class="ph-fill ph-phone-call"></i></div>
+            <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-2" id="stat-contacted">0</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Đã liên hệ</p>
+          </div>
         </div>
+
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col overflow-hidden">
           <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div><h2 class="text-lg font-bold text-slate-800 dark:text-white">Học viên mới đăng ký</h2></div>
-            <div class="flex items-center gap-3"><input type="text" id="searchInput" placeholder="Tìm tên, SĐT..." class="px-4 py-2 bg-slate-100 dark:bg-slate-800 border-transparent border focus:border-brand-500 rounded-lg text-sm outline-none w-48 dark:text-white"><button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-sm font-medium rounded-lg dark:text-white"><i class="ph ph-download-simple text-lg"></i><span>Xuất CSV</span></button></div>
+            <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2"><i class="ph-fill ph-address-book"></i> Danh sách đăng ký</h2>
+            
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+              <div class="relative w-full sm:w-64">
+                <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Tìm tên, SĐT..." class="w-full pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 focus:border-brand-500 rounded-lg text-sm outline-none dark:text-white tr-smooth">
+              </div>
+              <select id="statusFilter" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm font-medium outline-none dark:text-white cursor-pointer tr-smooth">
+                <option value="all">Tất cả trạng thái</option>
+                <option value="Chờ xử lý">Chờ xử lý</option>
+                <option value="Đã liên hệ">Đã liên hệ</option>
+                <option value="Đã nhập học">Đã nhập học</option>
+              </select>
+              <button onclick="exportCSV()" class="hidden md:flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg tr-smooth"><i class="ph ph-plus"></i>Thêm mới</button>
+            </div>
           </div>
+
           <div class="overflow-x-auto">
-            <table class="w-full text-left border-collapse">
-              <thead><tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 font-semibold"><th class="p-4 pl-6">Họ và Tên</th><th class="p-4">Liên hệ</th><th class="p-4">Khóa học</th><th class="p-4">Thời gian</th><th class="p-4 text-center">Trạng thái</th><th class="p-4 pr-6 text-right">Xóa</th></tr></thead>
-              <tbody id="student-list" class="divide-y divide-slate-100 dark:divide-slate-800/50"><tr><td colspan="6" class="p-6"><div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div></td></tr></tbody>
+            <table class="w-full text-left border-collapse min-w-[800px]">
+              <thead>
+                <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 font-bold">
+                  <th class="p-4 pl-6">Họ Tên</th>
+                  <th class="p-4">Điện Thoại</th>
+                  <th class="p-4">Email</th>
+                  <th class="p-4 w-48">Khóa Học</th>
+                  <th class="p-4">Thời Gian</th>
+                  <th class="p-4 text-center w-40">Trạng Thái</th>
+                  <th class="p-4 pr-6 text-right w-16"></th>
+                </tr>
+              </thead>
+              <tbody id="student-list" class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                <tr><td colspan="7" class="p-6"><div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div></td></tr>
+              </tbody>
             </table>
           </div>
         </div>
@@ -105,9 +152,7 @@
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
-              <thead><tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 font-semibold">
-                <th class="p-4 pl-6">Tiêu đề Chiến dịch</th><th class="p-4">Số lượng</th><th class="p-4">Ngày gửi</th><th class="p-4 text-center">Trạng thái</th>
-              </tr></thead>
+              <thead><tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 font-semibold"><th class="p-4 pl-6">Tiêu đề Chiến dịch</th><th class="p-4">Số lượng</th><th class="p-4">Ngày gửi</th><th class="p-4 text-center">Trạng thái</th></tr></thead>
               <tbody id="email-list" class="divide-y divide-slate-100 dark:divide-slate-800/50"><tr><td colspan="4" class="p-6"><div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div></td></tr></tbody>
             </table>
           </div>
@@ -175,7 +220,11 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3"></div>
 
   <script>
-    function switchView(viewId, pageTitle) { document.querySelectorAll('.view-panel').forEach(p => { p.classList.remove('block'); p.classList.add('hidden'); }); document.getElementById('view-' + viewId).classList.remove('hidden'); document.getElementById('view-' + viewId).classList.add('block'); document.querySelectorAll('.menu-item').forEach(i => { i.classList.remove('bg-brand-600', 'text-white', 'shadow-md'); i.classList.add('hover:bg-slate-800/50', 'text-slate-300'); }); const active = document.getElementById('menu-' + viewId); active.classList.remove('hover:bg-slate-800/50', 'text-slate-300'); active.classList.add('bg-brand-600', 'text-white', 'shadow-md'); document.getElementById('page-title').innerText = pageTitle; }
+    // Đặt ngày hôm nay lên topbar
+    const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('top-date').innerText = new Date().toLocaleDateString('vi-VN', dateOptions);
+
+    function switchView(viewId, pageTitle) { document.querySelectorAll('.view-panel').forEach(p => { p.classList.remove('block'); p.classList.add('hidden'); }); document.getElementById('view-' + viewId).classList.remove('hidden'); document.getElementById('view-' + viewId).classList.add('block'); document.querySelectorAll('.menu-item').forEach(i => { i.classList.remove('bg-brand-600', 'text-white', 'shadow-md'); i.classList.add('hover:bg-slate-800/50', 'text-slate-300'); }); const active = document.getElementById('menu-' + viewId); active.classList.remove('hover:bg-slate-800/50', 'text-slate-300'); active.classList.add('bg-brand-600', 'text-white', 'shadow-md'); document.getElementById('page-title').innerHTML = `<i class="ph-fill ph-calendar-check text-slate-400"></i> ${pageTitle}`; }
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); document.getElementById('sidebar-overlay').classList.toggle('hidden'); }
     function toggleTheme() { const html = document.documentElement; if (html.classList.contains('dark')) { html.classList.remove('dark'); localStorage.setItem('theme', 'light'); } else { html.classList.add('dark'); localStorage.setItem('theme', 'dark'); } }
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark'); }
@@ -195,39 +244,113 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot, doc, deleteDoc, addDoc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    import { getFirestore, collection, query, orderBy, onSnapshot, doc, deleteDoc, updateDoc, addDoc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = { apiKey: "AIzaSyA4mM5GhVzMtlCiymFrKgfjR6n3f2X85yE", authDomain: "taynguyenphim-web.firebaseapp.com", projectId: "taynguyenphim-web", storageBucket: "taynguyenphim-web.firebasestorage.app", messagingSenderId: "608085042835", appId: "1:608085042835:web:da3a8c05fe79d6cf970f66" };
     const app = initializeApp(firebaseConfig); const db = getFirestore(app);
 
-    // --- 1. HỌC VIÊN ---
-    const tbodyStudents = document.getElementById('student-list'); let localStudents = [];
+    // --- 1. HỌC VIÊN ĐĂNG KÝ (CÓ TRẠNG THÁI) ---
+    const tbodyStudents = document.getElementById('student-list'); 
+    let localStudents = [];
+
     onSnapshot(query(collection(db, "hoc_vien"), orderBy("ngay_tao", "desc")), (snapshot) => {
-      tbodyStudents.innerHTML = ''; localStudents = []; let tc=0; const ts=new Date().toLocaleDateString('vi-VN');
-      if (snapshot.empty) return tbodyStudents.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Chưa có dữ liệu.</td></tr>`;
+      localStudents = []; 
+      let total = 0, pending = 0, contacted = 0;
+
       snapshot.forEach((doc) => {
-        const d = doc.data(); let t = "Vừa xong"; if(d.ngay_tao){const date=d.ngay_tao.toDate();t=date.toLocaleString('vi-VN');if(date.toLocaleDateString('vi-VN')===ts)tc++;}
-        localStudents.push({id:doc.id, ...d, timeString:t});
-        const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800/50";
-        tr.innerHTML = `<td class="p-4 pl-6"><div class="font-semibold">${d.ho_ten||'Không tên'}</div><div class="text-xs text-slate-500">${d.email||''}</div></td><td class="p-4 font-bold">${d.so_dien_thoai||'---'}</td><td class="p-4">${d.khoa_hoc||'---'}</td><td class="p-4 text-sm">${t}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs bg-blue-50 text-brand-600">MỚI</span></td><td class="p-4 pr-6 text-right"><button onclick="deleteStudent('${doc.id}')" class="text-red-500"><i class="ph ph-trash text-lg"></i></button></td>`;
-        tbodyStudents.appendChild(tr);
+        const d = doc.data(); 
+        total++;
+        let status = d.trang_thai || 'Chờ xử lý';
+        if(status === 'Chờ xử lý') pending++;
+        if(status === 'Đã liên hệ') contacted++;
+
+        // Format thời gian hiển thị: 2025-03-26 <br> 10:00
+        let timeString = "Vừa xong"; 
+        if(d.ngay_tao){
+          const date = d.ngay_tao.toDate();
+          const yyyy = date.getFullYear(); const mm = String(date.getMonth() + 1).padStart(2, '0'); const dd = String(date.getDate()).padStart(2, '0');
+          const hh = String(date.getHours()).padStart(2, '0'); const min = String(date.getMinutes()).padStart(2, '0');
+          timeString = `<div class="font-medium">${yyyy}-${mm}-${dd}</div><div class="text-slate-400 dark:text-slate-500">${hh}:${min}</div>`;
+        }
+        localStudents.push({id:doc.id, status: status, ...d, timeString: timeString});
       });
-      document.getElementById('stat-total').innerText = localStudents.length; document.getElementById('stat-today').innerText = tc;
+
+      document.getElementById('stat-total').innerText = total; 
+      document.getElementById('stat-pending').innerText = pending;
+      document.getElementById('stat-contacted').innerText = contacted;
+      
+      applyFilters(); // Render bảng sau khi có dữ liệu
     });
 
-    window.deleteStudent = async function(id) { if(confirm("Xóa?")) { await deleteDoc(doc(db, "hoc_vien", id)); showToast('Đã xóa!'); } }
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-      const k = e.target.value.toLowerCase(); const arr = localStudents.filter(s => (s.ho_ten||'').toLowerCase().includes(k) || (s.so_dien_thoai||'').includes(k));
-      tbodyStudents.innerHTML = ''; arr.forEach((d) => { const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800/50"; tr.innerHTML = `<td class="p-4 pl-6"><div class="font-semibold">${d.ho_ten||'Không tên'}</div><div class="text-xs text-slate-500">${d.email||''}</div></td><td class="p-4 font-bold">${d.so_dien_thoai||'---'}</td><td class="p-4">${d.khoa_hoc||'---'}</td><td class="p-4 text-sm">${d.timeString}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs bg-blue-50 text-brand-600">MỚI</span></td><td class="p-4 pr-6 text-right"><button onclick="deleteStudent('${d.id}')" class="text-red-500"><i class="ph ph-trash text-lg"></i></button></td>`; tbodyStudents.appendChild(tr); });
-    });
+    // Hàm thay đổi trạng thái trực tiếp bằng Dropdown trong bảng
+    window.changeStatus = async function(id, newStatus) {
+      try {
+        await updateDoc(doc(db, "hoc_vien", id), { trang_thai: newStatus });
+        showToast('Đã cập nhật trạng thái thành công!');
+      } catch (error) { showToast('Lỗi cập nhật', 'error'); }
+    }
+
+    window.deleteStudent = async function(id) { if(confirm("Xóa đăng ký này?")) { await deleteDoc(doc(db, "hoc_vien", id)); showToast('Đã xóa!'); } }
+    
+    // Bộ lọc: Tìm kiếm + Select Trạng thái
+    function applyFilters() {
+      const k = document.getElementById('searchInput').value.toLowerCase();
+      const s = document.getElementById('statusFilter').value;
+      const filtered = localStudents.filter(d => {
+        const matchKey = (d.ho_ten||'').toLowerCase().includes(k) || (d.so_dien_thoai||'').includes(k);
+        const matchStatus = s === 'all' || d.status === s;
+        return matchKey && matchStatus;
+      });
+      renderStudentTable(filtered);
+    }
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('statusFilter').addEventListener('change', applyFilters);
+
+    function renderStudentTable(arr) {
+      tbodyStudents.innerHTML = '';
+      if (arr.length === 0) return tbodyStudents.innerHTML = `<tr><td colspan="7" class="p-8 text-center text-slate-500">Chưa có dữ liệu phù hợp.</td></tr>`;
+      
+      arr.forEach((d) => {
+        const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800/50";
+        
+        // Render màu sắc trạng thái
+        let bgClass = "bg-amber-50 text-amber-600 border-amber-200"; // Chờ xử lý mặc định
+        if(d.status === 'Đã liên hệ') bgClass = "bg-blue-50 text-blue-600 border-blue-200";
+        if(d.status === 'Đã nhập học') bgClass = "bg-emerald-50 text-emerald-600 border-emerald-200";
+
+        tr.innerHTML = `
+          <td class="p-4 pl-6">
+            <div class="font-bold text-slate-800 dark:text-white">${d.ho_ten||'Không tên'}</div>
+            <div class="text-xs text-slate-500 mt-1">${d.nguon||'Website'}</div>
+          </td>
+          <td class="p-4 font-bold text-brand-600 dark:text-brand-400"><a href="tel:${d.so_dien_thoai||''}">${d.so_dien_thoai||'---'}</a></td>
+          <td class="p-4 text-sm text-slate-600 dark:text-slate-300">${d.email||'—'}</td>
+          <td class="p-4 text-sm font-medium text-slate-700 dark:text-slate-300 leading-tight">${d.khoa_hoc||'---'}</td>
+          <td class="p-4 text-sm text-slate-600 dark:text-slate-400">${d.timeString}</td>
+          <td class="p-4 text-center">
+            <select onchange="changeStatus('${d.id}', this.value)" class="status-select px-3 py-1.5 rounded-full text-xs font-bold border outline-none ${bgClass} dark:bg-transparent">
+              <option value="Chờ xử lý" ${d.status==='Chờ xử lý'?'selected':''} class="text-black">⏳ Chờ xử lý</option>
+              <option value="Đã liên hệ" ${d.status==='Đã liên hệ'?'selected':''} class="text-black">📞 Đã liên hệ</option>
+              <option value="Đã nhập học" ${d.status==='Đã nhập học'?'selected':''} class="text-black">✅ Đã nhập học</option>
+            </select>
+          </td>
+          <td class="p-4 pr-6 text-right">
+            <button onclick="deleteStudent('${d.id}')" class="text-red-400 hover:text-red-600 tr-smooth p-2 bg-slate-100 dark:bg-slate-800 rounded-lg" title="Xóa"><i class="ph ph-trash text-lg"></i></button>
+          </td>
+        `;
+        tbodyStudents.appendChild(tr);
+      });
+    }
+
     window.exportCSV = function() {
       if (localStudents.length === 0) return showToast('Không có dữ liệu!', 'error');
-      let csv = "data:text/csv;charset=utf-8,\uFEFF" + "Họ và tên,Số điện thoại,Email,Khóa học,Thời gian\n";
-      localStudents.forEach(r => { csv += `"${r.ho_ten||''}","${r.so_dien_thoai||''}","${r.email||''}","${r.khoa_hoc||''}","${r.timeString||''}"\n`; });
+      let csv = "data:text/csv;charset=utf-8,\uFEFF" + "Họ và tên,Số điện thoại,Email,Khóa học,Trạng thái\n";
+      localStudents.forEach(r => { csv += `"${r.ho_ten||''}","${r.so_dien_thoai||''}","${r.email||''}","${r.khoa_hoc||''}","${r.status||''}"\n`; });
       const a = document.createElement("a"); a.href = encodeURI(csv); a.download = "Hoc_Vien.csv"; a.click(); showToast('Đã xuất file CSV!');
     }
 
-    // --- 2. KHÓA HỌC ---
+
+    // --- 2. KHÓA HỌC (ĐÃ CODE CHUẨN Ở BẢN TRƯỚC) ---
     const tbodyCourses = document.getElementById('course-list'); let localCourses = [];
     onSnapshot(query(collection(db, "khoa_hoc"), orderBy("ngay_tao", "desc")), (snapshot) => {
       tbodyCourses.innerHTML = ''; localCourses = [];
@@ -235,7 +358,7 @@
       snapshot.forEach((doc) => {
         const d = doc.data(); localCourses.push({ id: doc.id, ...d });
         const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800/50";
-        tr.innerHTML = `<td class="p-4 pl-6 font-bold"><i class="ph-fill ph-book-open text-brand-500 mr-2"></i>${d.ten_khoa_hoc}</td><td class="p-4 text-sm">${d.danh_muc}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs border bg-slate-100 dark:bg-slate-800">${d.trang_thai}</span></td><td class="p-4 pr-6 text-right"><button onclick="editCourse('${doc.id}')" class="mr-2 text-blue-500"><i class="ph ph-pencil-simple text-lg"></i></button><button onclick="deleteCourse('${doc.id}')" class="text-red-500"><i class="ph ph-trash text-lg"></i></button></td>`;
+        tr.innerHTML = `<td class="p-4 pl-6 font-bold"><i class="ph-fill ph-book-open text-brand-500 mr-2"></i>${d.ten_khoa_hoc}</td><td class="p-4 text-sm">${d.danh_muc}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs border bg-slate-100 dark:bg-slate-800">${d.trang_thai}</span></td><td class="p-4 pr-6 text-right"><button onclick="editCourse('${doc.id}')" class="mr-2 text-blue-500 p-2 bg-slate-100 dark:bg-slate-800 rounded"><i class="ph ph-pencil-simple text-lg"></i></button><button onclick="deleteCourse('${doc.id}')" class="text-red-500 p-2 bg-slate-100 dark:bg-slate-800 rounded"><i class="ph ph-trash text-lg"></i></button></td>`;
         tbodyCourses.appendChild(tr);
       });
     });
@@ -288,11 +411,6 @@
       const btn = document.getElementById('btn-save-email'); btn.innerHTML = '⏳ Đang Gửi...'; btn.disabled = true;
 
       try { 
-        // Lệnh gửi Email (Nhớ điền mã của bạn ở trên <head> và ở đây)
-        // for (const email of selectedEmails) {
-        //   await emailjs.send("MÃ_SERVICE_ID_CỦA_BẠN", "MÃ_TEMPLATE_ID_CỦA_BẠN", { to_email: email, subject: title, message: content });
-        // }
-
         await addDoc(collection(db, "chien_dich_email"), { tieu_de: title, noi_dung: content, nguoi_nhan: selectedEmails, so_luong_gui: selectedEmails.length, ngay_gui: serverTimestamp() }); 
         closeEmailModal(); showToast(`Đã lưu/gửi chiến dịch tới ${selectedEmails.length} người!`); 
       } catch (error) { showToast('Lỗi khi gửi/lưu', 'error'); } finally { btn.innerHTML = 'Gửi và Lưu lịch sử'; btn.disabled = false; }
