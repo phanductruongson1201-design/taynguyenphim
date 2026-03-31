@@ -782,24 +782,26 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
       <div class="cform reveal d1">
         <h4>🎓 Đăng Ký Học Ngay</h4>
         <div class="ptag">🎁 Tặng Voucher 1–2 triệu khi đăng ký hôm nay!</div>
-        <div class="frow">
-          <div class="fg"><label class="fl3">Họ và tên *</label><input class="fi3" id="cf-name" placeholder="Nguyễn Văn A"></div>
-          <div class="fg"><label class="fl3">Số điện thoại *</label><input class="fi3" id="cf-phone" type="tel" placeholder="0905 xxx xxx"></div>
-        </div>
-        <div class="fg"><label class="fl3">Email</label><input class="fi3" id="cf-email" type="email" placeholder="email@gmail.com"></div>
-        <div class="fg">
-          <label class="fl3">Khóa học quan tâm</label>
-          <select class="fsel" id="cf-course">
-            <option value="">-- Chọn khóa học --</option>
-            <optgroup label="Kỹ Năng & MC"><option>Đào Tạo MC Chuyên Nghiệp</option><option>Đào Tạo MC Nhí</option><option>Kỹ Năng Giao Tiếp</option><option>Luyện Sửa Giọng Nói</option><option>Nói Chuyện Trước Công Chúng</option></optgroup>
-            <optgroup label="Diễn Viên"><option>Đào Tạo Diễn Viên Chuyên Nghiệp</option><option>Đào Tạo Diễn Viên Nhí</option><option>Đào Tạo Diễn Viên Hài</option><option>Đào Tạo Diễn Viên Kịch</option><option>Luyện Thi Gương Mặt Điện Ảnh</option><option>Sáng Tạo Nội Dung & Livestream</option></optgroup>
-            <optgroup label="Thanh Nhạc"><option>Khóa Học Hát Chuyên Nghiệp</option><option>Đào Tạo Ca Sĩ Chuyên Nghiệp</option><option>Khóa Học Luyện Thanh</option><option>Khóa Học Hát Bolero</option><option>Khóa Học Hát Karaoke</option><option>Khóa Học Hát Cho Trẻ Em</option><option>Khóa Học Đàn Piano</option><option>Phong Cách Biểu Diễn</option></optgroup>
-            <optgroup label="Người Mẫu"><option>Đào Tạo Người Mẫu Thời Trang</option><option>Khóa Học Người Mẫu Nhí</option></optgroup>
-            <optgroup label="Doanh Nghiệp"><option>Kỹ Năng Mềm Cho Doanh Nghiệp</option><option>Kỹ Năng Thương Thuyết Kinh Doanh</option><option>Tư Duy Phản Biện & Giải Quyết Vấn Đề</option><option>Quản Lý & Kiểm Soát Cảm Xúc</option></optgroup>
-          </select>
-        </div>
-        <div class="fg"><label class="fl3">Tin nhắn</label><textarea class="fta" id="cf-msg" placeholder="Bạn muốn hỏi điều gì? Thời gian học phù hợp?..."></textarea></div>
-        <button class="bp" style="width:100%;justify-content:center" onclick="subContact()">🚀 Gửi Đăng Ký – Nhận Voucher Ngay</button>
+        <form id="contact-form">
+          <div class="frow">
+            <div class="fg"><label class="fl3">Họ và tên *</label><input class="fi3" id="cf-name" placeholder="Nguyễn Văn A" required></div>
+            <div class="fg"><label class="fl3">Số điện thoại *</label><input class="fi3" id="cf-phone" type="tel" placeholder="0905 xxx xxx" required></div>
+          </div>
+          <div class="fg"><label class="fl3">Email</label><input class="fi3" id="cf-email" type="email" placeholder="email@gmail.com"></div>
+          <div class="fg">
+            <label class="fl3">Khóa học quan tâm</label>
+            <select class="fsel" id="cf-course">
+              <option value="">-- Chọn khóa học --</option>
+              <optgroup label="Kỹ Năng & MC"><option>Đào Tạo MC Chuyên Nghiệp</option><option>Đào Tạo MC Nhí</option><option>Kỹ Năng Giao Tiếp</option><option>Luyện Sửa Giọng Nói</option><option>Nói Chuyện Trước Công Chúng</option></optgroup>
+              <optgroup label="Diễn Viên"><option>Đào Tạo Diễn Viên Chuyên Nghiệp</option><option>Đào Tạo Diễn Viên Nhí</option><option>Đào Tạo Diễn Viên Hài</option><option>Đào Tạo Diễn Viên Kịch</option><option>Luyện Thi Gương Mặt Điện Ảnh</option><option>Sáng Tạo Nội Dung & Livestream</option></optgroup>
+              <optgroup label="Thanh Nhạc"><option>Khóa Học Hát Chuyên Nghiệp</option><option>Đào Tạo Ca Sĩ Chuyên Nghiệp</option><option>Khóa Học Luyện Thanh</option><option>Khóa Học Hát Bolero</option><option>Khóa Học Hát Karaoke</option><option>Khóa Học Hát Cho Trẻ Em</option><option>Khóa Học Đàn Piano</option><option>Phong Cách Biểu Diễn</option></optgroup>
+              <optgroup label="Người Mẫu"><option>Đào Tạo Người Mẫu Thời Trang</option><option>Khóa Học Người Mẫu Nhí</option></optgroup>
+              <optgroup label="Doanh Nghiệp"><option>Kỹ Năng Mềm Cho Doanh Nghiệp</option><option>Kỹ Năng Thương Thuyết Kinh Doanh</option><option>Tư Duy Phản Biện & Giải Quyết Vấn Đề</option><option>Quản Lý & Kiểm Soát Cảm Xúc</option></optgroup>
+            </select>
+          </div>
+          <div class="fg"><label class="fl3">Tin nhắn</label><textarea class="fta" id="cf-msg" placeholder="Bạn muốn hỏi điều gì? Thời gian học phù hợp?..."></textarea></div>
+          <button type="submit" class="bp" id="cf-submit-btn" style="width:100%;justify-content:center">🚀 Gửi Đăng Ký – Nhận Voucher Ngay</button>
+        </form>
         <p style="text-align:center;font-size:12px;color:var(--g400);margin-top:.65rem">🔒 Thông tin bảo mật · Tư vấn miễn phí · <a href="tel:02862733715" style="color:var(--gold)">028 6273 3715</a></p>
       </div>
     </div>
@@ -892,27 +894,30 @@ body{font-family:var(--fb);background:var(--white);color:var(--text);overflow-x:
     <div class="mtitle">Bắt Đầu Hành Trình Của Bạn</div>
     <div class="msub" id="msub">Điền thông tin để được tư vấn và nhận ưu đãi.</div>
     <div class="ptag2">🎁 Tặng Voucher 1–2 triệu khi đăng ký hôm nay!</div>
-    <div class="fg"><label class="fl3">Họ và tên *</label><input class="fi3" id="m-name" placeholder="Nguyễn Văn A"></div>
-    <div class="frow">
-      <div class="fg"><label class="fl3">Số điện thoại *</label><input class="fi3" id="m-phone" type="tel" placeholder="0905 xxx xxx"></div>
-      <div class="fg"><label class="fl3">Tuổi</label><input class="fi3" id="m-age" type="number" placeholder="25" min="5" max="70"></div>
-    </div>
-    <div class="fg"><label class="fl3">Email</label><input class="fi3" id="m-email" type="email" placeholder="email@gmail.com"></div>
-    <div class="fg">
-      <label class="fl3">Khóa học *</label>
-      <select class="fsel" id="m-course">
-        <option value="">-- Chọn khóa học --</option>
-        <optgroup label="Kỹ Năng & MC"><option>Đào Tạo MC Chuyên Nghiệp</option><option>Đào Tạo MC Nhí</option><option>Kỹ Năng Giao Tiếp</option><option>Luyện Sửa Giọng Nói</option></optgroup>
-        <optgroup label="Diễn Viên"><option>Đào Tạo Diễn Viên Chuyên Nghiệp</option><option>Đào Tạo Diễn Viên Nhí</option><option>Đào Tạo Diễn Viên Hài</option><option>Luyện Thi Gương Mặt Điện Ảnh</option></optgroup>
-        <optgroup label="Thanh Nhạc"><option>Khóa Học Hát Chuyên Nghiệp</option><option>Đào Tạo Ca Sĩ Chuyên Nghiệp</option><option>Khóa Học Hát Bolero</option><option>Khóa Học Đàn Piano</option></optgroup>
-        <optgroup label="Người Mẫu"><option>Đào Tạo Người Mẫu Thời Trang</option><option>Khóa Học Người Mẫu Nhí</option></optgroup>
-      </select>
-    </div>
-    <div class="fg">
-      <label class="fl3">Trình độ</label>
-      <select class="fsel" id="m-level"><option>Người mới bắt đầu</option><option>Đã có chút kinh nghiệm</option><option>Đang hoạt động nghề</option></select>
-    </div>
-    <button class="bp" style="width:100%;justify-content:center;margin-top:.4rem" onclick="subReg()">🚀 Đăng Ký – Nhận Voucher 1–2 Triệu Ngay</button>
+    
+    <form id="popup-form">
+      <div class="fg"><label class="fl3">Họ và tên *</label><input class="fi3" id="m-name" placeholder="Nguyễn Văn A" required></div>
+      <div class="frow">
+        <div class="fg"><label class="fl3">Số điện thoại *</label><input class="fi3" id="m-phone" type="tel" placeholder="0905 xxx xxx" required></div>
+        <div class="fg"><label class="fl3">Tuổi</label><input class="fi3" id="m-age" type="number" placeholder="25" min="5" max="70"></div>
+      </div>
+      <div class="fg"><label class="fl3">Email</label><input class="fi3" id="m-email" type="email" placeholder="email@gmail.com"></div>
+      <div class="fg">
+        <label class="fl3">Khóa học *</label>
+        <select class="fsel" id="m-course" required>
+          <option value="">-- Chọn khóa học --</option>
+          <optgroup label="Kỹ Năng & MC"><option>Đào Tạo MC Chuyên Nghiệp</option><option>Đào Tạo MC Nhí</option><option>Kỹ Năng Giao Tiếp</option><option>Luyện Sửa Giọng Nói</option></optgroup>
+          <optgroup label="Diễn Viên"><option>Đào Tạo Diễn Viên Chuyên Nghiệp</option><option>Đào Tạo Diễn Viên Nhí</option><option>Đào Tạo Diễn Viên Hài</option><option>Luyện Thi Gương Mặt Điện Ảnh</option></optgroup>
+          <optgroup label="Thanh Nhạc"><option>Khóa Học Hát Chuyên Nghiệp</option><option>Đào Tạo Ca Sĩ Chuyên Nghiệp</option><option>Khóa Học Hát Bolero</option><option>Khóa Học Đàn Piano</option></optgroup>
+          <optgroup label="Người Mẫu"><option>Đào Tạo Người Mẫu Thời Trang</option><option>Khóa Học Người Mẫu Nhí</option></optgroup>
+        </select>
+      </div>
+      <div class="fg">
+        <label class="fl3">Trình độ</label>
+        <select class="fsel" id="m-level"><option>Người mới bắt đầu</option><option>Đã có chút kinh nghiệm</option><option>Đang hoạt động nghề</option></select>
+      </div>
+      <button type="submit" class="bp" id="m-submit-btn" style="width:100%;justify-content:center;margin-top:.4rem">🚀 Đăng Ký – Nhận Voucher 1–2 Triệu Ngay</button>
+    </form>
     <p style="text-align:center;font-size:12px;color:var(--g400);margin-top:.6rem">🔒 Bảo mật tuyệt đối · <a href="tel:02862733715" style="color:var(--gold)">028 6273 3715</a></p>
   </div>
 </div>
@@ -978,27 +983,6 @@ function openM(course){
 function closeM(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
 function closeBg(e){if(e.target===document.getElementById('modal'))closeM()}
 
-// Form Submissions (Simulated)
-function subReg(){
-  const n=document.getElementById('m-name').value.trim();
-  const p=document.getElementById('m-phone').value.trim();
-  const c=document.getElementById('m-course').value;
-  if(!n){toast('Vui lòng nhập họ tên!',false);return}
-  if(!p||p.length<9){toast('Vui lòng nhập SĐT hợp lệ!',false);return}
-  if(!c){toast('Vui lòng chọn khóa học!',false);return}
-  closeM();
-  toast('🎉 Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm. Hotline: 028 6273 3715',true);
-  ['m-name','m-phone','m-age','m-email'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('m-course').selectedIndex=0;
-}
-function subContact(){
-  const n=document.getElementById('cf-name').value.trim();
-  const p=document.getElementById('cf-phone').value.trim();
-  if(!n||!p){toast('Vui lòng nhập họ tên và số điện thoại!',false);return}
-  toast('✅ Đã gửi! Chúng tôi sẽ liên hệ sớm nhất. Hotline: 028 6273 3715',true);
-  ['cf-name','cf-phone','cf-email','cf-msg'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('cf-course').selectedIndex=0;
-}
 
 // Toast Notification
 function toast(msg,ok=true){
@@ -1031,12 +1015,11 @@ function copyCode(){
 
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
 </script>
+
 <script type="module">
-  // 1. Nhập thư viện Firebase
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // 2. Chìa khóa cấu hình của bạn
   const firebaseConfig = {
     apiKey: "AIzaSyA4mM5GhVzMtlCiymFrKgfjR6n3f2X85yE",
     authDomain: "taynguyenphim-web.firebaseapp.com",
@@ -1046,95 +1029,78 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
     appId: "1:608085042835:web:da3a8c05fe79d6cf970f66"
   };
 
-  // 3. Khởi động kết nối
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  // 4. Viết lại hàm đăng ký ở Popup (Modal) để đẩy dữ liệu lên mây
-  window.subReg = async function() {
-    const n = document.getElementById('m-name').value.trim();
-    const p = document.getElementById('m-phone').value.trim();
-    const a = document.getElementById('m-age').value.trim();
-    const e = document.getElementById('m-email').value.trim();
-    const c = document.getElementById('m-course').value;
-    const l = document.getElementById('m-level').value;
+  // Xử lý Form Popup
+  const popupForm = document.getElementById('popup-form');
+  if (popupForm) {
+    popupForm.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Ngăn trình duyệt tải lại trang
 
-    if(!n){ toast('Vui lòng nhập họ tên!', false); return; }
-    if(!p || p.length < 9){ toast('Vui lòng nhập SĐT hợp lệ!', false); return; }
-    if(!c){ toast('Vui lòng chọn khóa học!', false); return; }
+      const btn = document.getElementById('m-submit-btn');
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '⏳ Đang xử lý...';
+      btn.disabled = true;
 
-    // Đổi chữ nút thành "Đang gửi..." để người dùng biết
-    const btn = document.querySelector('#modal .bp');
-    const oldText = btn.innerHTML;
-    btn.innerHTML = '⏳ Đang xử lý...';
-    btn.disabled = true;
+      try {
+        await addDoc(collection(db, "hoc_vien"), {
+          ho_ten: document.getElementById('m-name').value.trim(),
+          so_dien_thoai: document.getElementById('m-phone').value.trim(),
+          tuoi: document.getElementById('m-age').value.trim(),
+          email: document.getElementById('m-email').value.trim(),
+          khoa_hoc: document.getElementById('m-course').value,
+          trinh_do: document.getElementById('m-level').value,
+          nguon: "Popup Đăng Ký",
+          ngay_tao: serverTimestamp()
+        });
 
-    try {
-      await addDoc(collection(db, "hoc_vien"), {
-        ho_ten: n,
-        so_dien_thoai: p,
-        tuoi: a,
-        email: e,
-        khoa_hoc: c,
-        trinh_do: l,
-        nguon: "Popup Đăng Ký",
-        ngay_tao: serverTimestamp()
-      });
+        closeM();
+        toast('🎉 Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm.', true);
+        popupForm.reset(); // Xóa trắng form tự động
+      } catch (error) {
+        console.error("Lỗi: ", error);
+        toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
+      } finally {
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+      }
+    });
+  }
 
-      closeM();
-      toast('🎉 Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm.', true);
-      
-      // Xóa form
-      ['m-name','m-phone','m-age','m-email'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('m-course').selectedIndex = 0;
-      document.getElementById('m-level').selectedIndex = 0;
-    } catch (error) {
-      console.error("Lỗi: ", error);
-      toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
-    } finally {
-      // Trả lại nút như cũ
-      btn.innerHTML = oldText;
-      btn.disabled = false;
-    }
-  };
+  // Xử lý Form Liên Hệ (Dưới Footer)
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-  // 5. Viết lại hàm đăng ký ở Form Liên hệ (Footer)
-  window.subContact = async function() {
-    const n = document.getElementById('cf-name').value.trim();
-    const p = document.getElementById('cf-phone').value.trim();
-    const e = document.getElementById('cf-email').value.trim();
-    const c = document.getElementById('cf-course').value;
-    const msg = document.getElementById('cf-msg').value.trim();
+      const btn = document.getElementById('cf-submit-btn');
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '⏳ Đang gửi...';
+      btn.disabled = true;
 
-    if(!n || !p){ toast('Vui lòng nhập họ tên và số điện thoại!', false); return; }
+      try {
+        await addDoc(collection(db, "hoc_vien"), {
+          ho_ten: document.getElementById('cf-name').value.trim(),
+          so_dien_thoai: document.getElementById('cf-phone').value.trim(),
+          email: document.getElementById('cf-email').value.trim(),
+          khoa_hoc: document.getElementById('cf-course').value,
+          loi_nhan: document.getElementById('cf-msg').value.trim(),
+          nguon: "Form Liên Hệ",
+          ngay_tao: serverTimestamp()
+        });
 
-    const btn = document.querySelector('.cform .bp');
-    const oldText = btn.innerHTML;
-    btn.innerHTML = '⏳ Đang gửi...';
-    btn.disabled = true;
-
-    try {
-      await addDoc(collection(db, "hoc_vien"), {
-        ho_ten: n,
-        so_dien_thoai: p,
-        email: e,
-        khoa_hoc: c,
-        loi_nhan: msg,
-        nguon: "Form Liên Hệ",
-        ngay_tao: serverTimestamp()
-      });
-
-      toast('✅ Đã gửi! Chúng tôi sẽ liên hệ sớm nhất.', true);
-      ['cf-name','cf-phone','cf-email','cf-msg'].forEach(id => document.getElementById(id).value = '');
-      document.getElementById('cf-course').selectedIndex = 0;
-    } catch (error) {
-      console.error("Lỗi: ", error);
-      toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
-    } finally {
-      btn.innerHTML = oldText;
-      btn.disabled = false;
-    }
-  };
+        toast('✅ Đã gửi! Chúng tôi sẽ liên hệ sớm nhất.', true);
+        contactForm.reset(); 
+      } catch (error) {
+        console.error("Lỗi: ", error);
+        toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
+      } finally {
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+      }
+    });
+  }
 </script>
 </body>
 </html>
