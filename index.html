@@ -1124,5 +1124,88 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
     });
   }
 </script>
+<script>
+  // 1. KHO BÀI VIẾT CHI TIẾT CHO TỪNG KHÓA HỌC
+  // Bạn có thể tự do viết nội dung dài ngoằng, in đậm, gạch đầu dòng vào đây
+  const courseArticles = {
+    "Đào Tạo MC Chuyên Nghiệp": `
+      <p><strong>Khóa học MC chuyên nghiệp</strong> tại Tây Nguyên Phim được thiết kế với 90% thời lượng là thực hành. Bạn sẽ được học trực tiếp với các MC đang công tác tại đài truyền hình.</p>
+      <br>
+      <p><strong>📌 Nội dung khóa học:</strong></p>
+      <ul style="margin-left: 20px; list-style-type: disc;">
+        <li>Tiếng nói sân khấu: Luyện sửa phát âm, ngọng, giọng địa phương.</li>
+        <li>Kỹ năng cầm micro, ngôn ngữ hình thể (Body language).</li>
+        <li>Nghệ thuật hoạt náo, xử lý tình huống trên sân khấu.</li>
+        <li>Kỹ năng viết kịch bản MC sự kiện, tiệc cưới, hội nghị.</li>
+      </ul>
+      <br>
+      <p>🎁 <strong>Đặc quyền:</strong> Tặng ngay Voucher giảm 1.000.000đ - 2.000.000đ và hỗ trợ ghi hình sản phẩm cuối khóa tại phim trường trị giá 5.000.000đ.</p>
+    `,
+    "Đào Tạo Diễn Viên Chuyên Nghiệp": `
+      <p><strong>Trở thành Diễn Viên chuyên nghiệp</strong> không còn là ước mơ xa vời. Khóa học cung cấp kiến thức nền tảng vững chắc về đài từ, biểu cảm khuôn mặt và kỹ thuật diễn xuất trước ống kính.</p>
+      <br>
+      <p>Học viên xuất sắc sẽ được công ty hỗ trợ casting vào các dự án phim truyền hình, web drama của các đối tác HTV, VTV...</p>
+    `,
+    // MẸO: Bạn cứ copy tên khóa học trên web và thêm nội dung tương tự như trên vào đây
+  };
+
+  // 2. TỰ ĐỘNG GẮN SỰ KIỆN VÀO TẤT CẢ THẺ KHÓA HỌC CÓ TRÊN WEB
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.cc').forEach(card => {
+      
+      card.addEventListener('click', function(e) {
+        // Nếu khách cố tình bấm thẳng vào nút "Đăng Ký" trên thẻ, thì bỏ qua mở bài viết, cho mở form luôn
+        if(e.target.closest('.bte')) return;
+
+        // Quét thông tin từ chính thẻ HTML mà khách vừa bấm
+        const name = this.querySelector('.cname').innerText;
+        const category = this.querySelector('.ccat').innerText;
+        const shortDesc = this.querySelector('.cdesc').innerText;
+        const imgSrc = this.querySelector('.cthumb img').src;
+        const tagEl = this.querySelector('.ctag');
+        const tag = tagEl ? tagEl.innerText : '';
+
+        // Rút bài viết chi tiết từ Kho. Nếu khóa nào chưa viết bài dài, tự động lấy dòng mô tả ngắn ghép vào.
+        const fullArticle = courseArticles[name] || `
+          <p style="font-size: 15px;">${shortDesc}</p>
+          <br><p><em>Vui lòng đăng ký để trung tâm liên hệ tư vấn lộ trình học chi tiết nhất cho bạn!</em></p>
+        `;
+
+        // Gọi lệnh hiển thị Popup Bài Viết
+        openCourseDetail(name, category, fullArticle, imgSrc, tag);
+      });
+    });
+  });
+
+  // 3. CÁC HÀM ĐIỀU KHIỂN BẬT/TẮT POPUP
+  function openCourseDetail(name, category, article, imgSrc, tag) {
+    document.getElementById('dt-title').innerText = name;
+    document.getElementById('dt-category').innerText = category;
+    document.getElementById('dt-content').innerHTML = article; // innerHTML để nhận thẻ in đậm, xuống dòng
+    document.getElementById('dt-img').src = imgSrc;
+
+    const tagEl = document.getElementById('dt-tag');
+    if(tag) { tagEl.innerText = tag; tagEl.style.display = 'inline-block'; }
+    else { tagEl.style.display = 'none'; }
+
+    // CỰC KỲ QUAN TRỌNG: Cài đặt để nút "Đăng Ký Khóa Này" chuyển sang Form thông tin
+    document.getElementById('dt-btn-register').onclick = function() {
+      closeDetailM(); // 1. Tắt popup bài viết
+      openM(name);    // 2. Mở popup form (hàm openM đã có sẵn trong web của bạn)
+    };
+
+    document.getElementById('detail-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDetailM() {
+    document.getElementById('detail-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeDetailBg(e) {
+    if (e.target === document.getElementById('detail-modal')) closeDetailM();
+  }
+</script>
 </body>
 </html>
