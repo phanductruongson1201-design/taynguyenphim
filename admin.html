@@ -4,56 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Tây Nguyên Phim</title>
-  
   <script src="https://cdn.tailwindcss.com"></script>
-  
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          colors: {
-            brand: {
-              50: '#eff6ff',
-              100: '#dbeafe',
-              500: '#3b82f6',
-              600: '#2563eb', // Primary
-              700: '#1d4ed8',
-              900: '#1e3a8a', // Sidebar Dark
-              950: '#0f172a',
-            }
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-          }
+          colors: { brand: { 50: '#eff6ff', 100: '#dbeafe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a', 950: '#0f172a' } },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] }
         }
       }
     }
   </script>
-
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
   <style>
     body { font-family: 'Inter', sans-serif; }
-    
-    /* Custom Scrollbar for a premium feel */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .dark ::-webkit-scrollbar-thumb { background: #475569; }
-    ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-
-    /* Transitions */
     .tr-smooth { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-    
-    /* Loading Skeleton Animation */
-    @keyframes pulse-bg {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
+    @keyframes pulse-bg { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .skeleton { animation: pulse-bg 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    
+    /* Hiệu ứng mờ dần khi chuyển đổi các Tab */
+    .fade-in { animation: fadeIn 0.3s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body class="bg-slate-50 dark:bg-brand-950 text-slate-800 dark:text-slate-200 h-screen overflow-hidden flex tr-smooth">
@@ -64,39 +41,37 @@
         <i class="ph-fill ph-film-strip text-brand-500 text-2xl"></i>
         <span>TNP <span class="text-brand-500">ADMIN</span></span>
       </div>
-      <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white">
-        <i class="ph ph-x text-xl"></i>
-      </button>
+      <button onclick="toggleSidebar()" class="md:hidden text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button>
     </div>
 
     <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
       <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-3">Quản lý</div>
       
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 bg-brand-600 text-white rounded-lg shadow-md shadow-brand-600/20 group tr-smooth">
+      <a href="#" id="menu-students" onclick="switchView('students', 'Tổng quan hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 bg-brand-600 text-white rounded-lg shadow-md shadow-brand-600/20 group tr-smooth">
         <i class="ph ph-users text-lg"></i>
         <span class="font-medium text-sm">Học viên đăng ký</span>
       </a>
 
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 rounded-lg group tr-smooth">
+      <a href="#" id="menu-courses" onclick="switchView('courses', 'Quản lý Khóa học')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth">
         <i class="ph ph-graduation-cap text-lg group-hover:text-brand-500"></i>
         <span class="font-medium text-sm group-hover:text-white">Khóa học</span>
       </a>
 
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 rounded-lg group tr-smooth">
+      <a href="#" id="menu-emails" onclick="switchView('emails', 'Chiến dịch Email')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth">
         <i class="ph ph-envelope-simple text-lg group-hover:text-brand-500"></i>
         <span class="font-medium text-sm group-hover:text-white">Chiến dịch Email</span>
       </a>
 
       <div class="mt-6 mb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Hệ thống</div>
       
-      <a href="#" class="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 rounded-lg group tr-smooth">
+      <a href="#" id="menu-settings" onclick="switchView('settings', 'Cài đặt hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth">
         <i class="ph ph-gear text-lg group-hover:text-brand-500"></i>
         <span class="font-medium text-sm group-hover:text-white">Cài đặt</span>
       </a>
     </nav>
 
     <div class="p-4 border-t border-slate-800">
-      <a href="index.html" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg tr-smooth">
+      <a href="/" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg tr-smooth">
         <i class="ph ph-arrow-left text-lg"></i>
         <span class="font-medium text-sm">Về trang chủ web</span>
       </a>
@@ -109,10 +84,8 @@
     
     <header class="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between px-4 sm:px-6 flex-shrink-0 z-10 tr-smooth">
       <div class="flex items-center gap-4">
-        <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-brand-600">
-          <i class="ph ph-list text-2xl"></i>
-        </button>
-        <h1 class="text-xl font-bold text-slate-800 dark:text-white hidden sm:block">Tổng quan hệ thống</h1>
+        <button onclick="toggleSidebar()" class="md:hidden text-slate-500 hover:text-brand-600"><i class="ph ph-list text-2xl"></i></button>
+        <h1 id="page-title" class="text-xl font-bold text-slate-800 dark:text-white hidden sm:block">Tổng quan hệ thống</h1>
       </div>
 
       <div class="flex items-center gap-3 sm:gap-5">
@@ -120,23 +93,11 @@
           <i class="ph ph-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
           <input type="text" id="searchInput" placeholder="Tìm tên, số điện thoại..." class="pl-9 pr-4 py-2 bg-slate-100 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 border focus:border-brand-500 rounded-full text-sm outline-none tr-smooth w-64 dark:text-white">
         </div>
-
-        <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 tr-smooth">
-          <i id="theme-icon" class="ph ph-moon text-lg"></i>
-        </button>
-
-        <button class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 relative tr-smooth">
-          <i class="ph ph-bell text-lg"></i>
-          <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-        </button>
-
+        <button onclick="toggleTheme()" class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 tr-smooth"><i id="theme-icon" class="ph ph-moon text-lg"></i></button>
+        <button class="w-9 h-9 flex items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 relative tr-smooth"><i class="ph ph-bell text-lg"></i><span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span></button>
         <div class="w-px h-6 bg-slate-200 dark:bg-slate-700 hidden sm:block"></div>
-
         <div class="flex items-center gap-3 cursor-pointer">
-          <div class="text-right hidden sm:block">
-            <div class="text-sm font-semibold text-slate-800 dark:text-white">Admin TNP</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400">Super Admin</div>
-          </div>
+          <div class="text-right hidden sm:block"><div class="text-sm font-semibold text-slate-800 dark:text-white">Admin TNP</div><div class="text-xs text-slate-500 dark:text-slate-400">Super Admin</div></div>
           <img src="https://ui-avatars.com/api/?name=Admin&background=2563eb&color=fff" alt="Avatar" class="w-9 h-9 rounded-full ring-2 ring-white dark:ring-slate-800 shadow-sm">
         </div>
       </div>
@@ -144,89 +105,61 @@
 
     <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
       
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
-        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 tr-smooth hover:shadow-md hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-users"></i></div>
-          <div>
-            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Tổng học viên</p>
-            <h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-total">0</h3>
-          </div>
+      <div id="view-students" class="view-panel block fade-in">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:shadow-md hover:-translate-y-1 tr-smooth"><div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-users"></i></div><div><p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Tổng học viên</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-total">0</h3></div></div>
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:shadow-md hover:-translate-y-1 tr-smooth"><div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-trend-up"></i></div><div><p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Đăng ký hôm nay</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-today">0</h3></div></div>
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:shadow-md hover:-translate-y-1 tr-smooth"><div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-star"></i></div><div><p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Khóa học HOT nhất</p><h3 class="text-sm font-bold text-slate-800 dark:text-white mt-1 truncate w-32" title="MC Chuyên Nghiệp">MC Chuyên Nghiệp</h3></div></div>
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 hover:shadow-md hover:-translate-y-1 tr-smooth"><div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-chart-line-up"></i></div><div><p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Tỷ lệ chuyển đổi</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white">68%</h3></div></div>
         </div>
-        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 tr-smooth hover:shadow-md hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-trend-up"></i></div>
-          <div>
-            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Đăng ký hôm nay</p>
-            <h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-today">0</h3>
+
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col overflow-hidden">
+          <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div><h2 class="text-lg font-bold text-slate-800 dark:text-white">Học viên mới đăng ký</h2><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Quản lý danh sách khách hàng cần tư vấn.</p></div>
+            <div class="flex items-center gap-3">
+              <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg tr-smooth"><i class="ph ph-download-simple text-lg"></i><span>Xuất CSV</span></button>
+              <button class="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg shadow-md shadow-brand-500/20 tr-smooth"><i class="ph ph-plus text-lg"></i><span class="hidden sm:inline">Thêm thủ công</span></button>
+            </div>
           </div>
-        </div>
-        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 tr-smooth hover:shadow-md hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-amber-50 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-star"></i></div>
-          <div>
-            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Khóa học HOT nhất</p>
-            <h3 class="text-sm font-bold text-slate-800 dark:text-white mt-1 truncate w-32" title="MC Chuyên Nghiệp">MC Chuyên Nghiệp</h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead><tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold"><th class="p-4 pl-6">Họ và Tên</th><th class="p-4">Liên hệ</th><th class="p-4">Khóa học quan tâm</th><th class="p-4">Thời gian</th><th class="p-4 text-center">Trạng thái</th><th class="p-4 pr-6 text-right">Hành động</th></tr></thead>
+              <tbody id="student-list" class="divide-y divide-slate-100 dark:divide-slate-800/50">
+                <tr><td colspan="6" class="p-6"><div class="flex flex-col gap-4"><div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div></div></td></tr>
+              </tbody>
+            </table>
           </div>
-        </div>
-        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4 tr-smooth hover:shadow-md hover:-translate-y-1">
-          <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-chart-line-up"></i></div>
-          <div>
-            <p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Tỷ lệ chuyển đổi</p>
-            <h3 class="text-2xl font-bold text-slate-800 dark:text-white">68%</h3>
+          <div class="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 bg-slate-50/50 dark:bg-slate-900/50">
+            <span>Hiển thị <span class="font-medium text-slate-800 dark:text-white" id="count-display">0</span> kết quả</span>
+            <div class="flex items-center gap-1"><button class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700" disabled><i class="ph ph-caret-left"></i></button><button class="w-8 h-8 flex items-center justify-center rounded bg-brand-600 text-white font-medium">1</button><button class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700"><i class="ph ph-caret-right"></i></button></div>
           </div>
         </div>
       </div>
 
-      <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col overflow-hidden tr-smooth">
-        <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h2 class="text-lg font-bold text-slate-800 dark:text-white">Học viên mới đăng ký</h2>
-            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Quản lý danh sách khách hàng cần tư vấn.</p>
+      <div id="view-courses" class="view-panel hidden fade-in">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8 text-center">
+          <div class="w-20 h-20 bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 rounded-full flex items-center justify-center mx-auto mb-4">
+            <i class="ph-fill ph-graduation-cap text-4xl"></i>
           </div>
-          
-          <div class="flex items-center gap-3">
-            <button onclick="exportCSV()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-medium rounded-lg tr-smooth">
-              <i class="ph ph-download-simple text-lg"></i>
-              <span>Xuất CSV</span>
-            </button>
-            <button class="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg shadow-md shadow-brand-500/20 tr-smooth">
-              <i class="ph ph-plus text-lg"></i>
-              <span class="hidden sm:inline">Thêm thủ công</span>
-            </button>
-          </div>
+          <h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">Quản lý Khóa học</h2>
+          <p class="text-slate-500 dark:text-slate-400 max-w-md mx-auto mb-6">Nơi bạn sẽ thêm mới, chỉnh sửa thông tin, hình ảnh và học phí của các khóa học (MC, Diễn Viên, Thanh Nhạc...).</p>
+          <button class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-medium rounded-lg shadow-md shadow-brand-500/20 transition">
+            + Thêm khóa học đầu tiên
+          </button>
         </div>
+      </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse">
-            <thead>
-              <tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
-                <th class="p-4 pl-6">Họ và Tên</th>
-                <th class="p-4">Liên hệ</th>
-                <th class="p-4">Khóa học quan tâm</th>
-                <th class="p-4">Thời gian</th>
-                <th class="p-4 text-center">Trạng thái</th>
-                <th class="p-4 pr-6 text-right">Hành động</th>
-              </tr>
-            </thead>
-            <tbody id="student-list" class="divide-y divide-slate-100 dark:divide-slate-800/50">
-              <tr>
-                <td colspan="6" class="p-6">
-                  <div class="flex flex-col gap-4">
-                    <div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div>
-                    <div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full opacity-70"></div>
-                    <div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full opacity-40"></div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+      <div id="view-emails" class="view-panel hidden fade-in">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8 text-center">
+          <i class="ph ph-envelope-simple-open text-5xl text-slate-400 mb-4 block"></i>
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white">Chiến dịch Email (Đang phát triển)</h2>
         </div>
-        
-        <div class="p-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm text-slate-500 dark:text-slate-400 bg-slate-50/50 dark:bg-slate-900/50">
-          <span>Hiển thị <span class="font-medium text-slate-800 dark:text-white" id="count-display">0</span> kết quả</span>
-          <div class="flex items-center gap-1">
-            <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 tr-smooth" disabled><i class="ph ph-caret-left"></i></button>
-            <button class="w-8 h-8 flex items-center justify-center rounded bg-brand-600 text-white font-medium shadow-sm">1</button>
-            <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-200 dark:hover:bg-slate-700 tr-smooth"><i class="ph ph-caret-right"></i></button>
-          </div>
+      </div>
+
+      <div id="view-settings" class="view-panel hidden fade-in">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8 text-center">
+          <i class="ph ph-gear text-5xl text-slate-400 mb-4 block"></i>
+          <h2 class="text-xl font-bold text-slate-800 dark:text-white">Cài đặt hệ thống (Đang phát triển)</h2>
         </div>
       </div>
 
@@ -236,7 +169,34 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-3"></div>
 
   <script>
-    // 1. Sidebar Toggle Mobile
+    // Hàm cốt lõi: CHUYỂN PHÒNG (SPA Routing)
+    function switchView(viewId, pageTitleText) {
+      // 1. Ẩn tất cả các phòng
+      document.querySelectorAll('.view-panel').forEach(panel => {
+        panel.classList.remove('block');
+        panel.classList.add('hidden');
+      });
+
+      // 2. Hiện phòng được chọn
+      document.getElementById('view-' + viewId).classList.remove('hidden');
+      document.getElementById('view-' + viewId).classList.add('block');
+
+      // 3. Xóa màu xanh ở tất cả các nút Menu, đưa về trạng thái xám
+      document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('bg-brand-600', 'text-white', 'shadow-md', 'shadow-brand-600/20');
+        item.classList.add('hover:bg-slate-800/50', 'text-slate-300');
+      });
+
+      // 4. Bật màu xanh cho nút Menu đang được click
+      const activeMenu = document.getElementById('menu-' + viewId);
+      activeMenu.classList.remove('hover:bg-slate-800/50', 'text-slate-300');
+      activeMenu.classList.add('bg-brand-600', 'text-white', 'shadow-md', 'shadow-brand-600/20');
+
+      // 5. Đổi tiêu đề thanh Topbar
+      document.getElementById('page-title').innerText = pageTitleText;
+    }
+
+    // Các hàm UI cũ
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('sidebar-overlay');
@@ -244,7 +204,6 @@
       overlay.classList.toggle('hidden');
     }
 
-    // 2. Dark Mode Toggle
     function toggleTheme() {
       const html = document.documentElement;
       const icon = document.getElementById('theme-icon');
@@ -258,46 +217,25 @@
         localStorage.setItem('theme', 'dark');
       }
     }
-
-    // Init theme based on system/storage
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
       document.getElementById('theme-icon').classList.replace('ph-moon', 'ph-sun');
     }
 
-    // 3. Toast Notification Builder
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       const isSuccess = type === 'success';
-      
       toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg transform transition-all duration-300 translate-y-10 opacity-0 border ${isSuccess ? 'bg-white dark:bg-slate-800 border-emerald-100 dark:border-emerald-900/30 text-slate-800 dark:text-white' : 'bg-white dark:bg-slate-800 border-red-100 dark:border-red-900/30 text-slate-800 dark:text-white'}`;
-      
-      toast.innerHTML = `
-        <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full ${isSuccess ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400' : 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400'}">
-          <i class="ph-fill ${isSuccess ? 'ph-check-circle' : 'ph-warning-circle'} text-xl"></i>
-        </div>
-        <p class="text-sm font-medium">${message}</p>
-      `;
-      
+      toast.innerHTML = `<div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full ${isSuccess ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400' : 'bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400'}"><i class="ph-fill ${isSuccess ? 'ph-check-circle' : 'ph-warning-circle'} text-xl"></i></div><p class="text-sm font-medium">${message}</p>`;
       container.appendChild(toast);
-      
-      // Animate in
-      setTimeout(() => {
-        toast.classList.remove('translate-y-10', 'opacity-0');
-      }, 10);
-
-      // Remove after 3s
-      setTimeout(() => {
-        toast.classList.add('opacity-0', 'translate-x-10');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
+      setTimeout(() => { toast.classList.add('opacity-0', 'translate-x-10'); setTimeout(() => toast.remove(), 300); }, 3000);
     }
   </script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    // Thêm doc và deleteDoc vào danh sách công cụ
     import { getFirestore, collection, query, orderBy, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -316,7 +254,6 @@
 
     const q = query(collection(db, "hoc_vien"), orderBy("ngay_tao", "desc"));
 
-    // Lắng nghe dữ liệu
     onSnapshot(q, (snapshot) => {
       localData = []; 
       let todayCount = 0;
@@ -330,9 +267,7 @@
         if (data.ngay_tao) {
           rawDate = data.ngay_tao.toDate();
           timeString = rawDate.toLocaleString('vi-VN');
-          if (rawDate.toLocaleDateString('vi-VN') === todayString) {
-            todayCount++;
-          }
+          if (rawDate.toLocaleDateString('vi-VN') === todayString) { todayCount++; }
         }
         localData.push({ id: doc.id, ...data, timeString, rawDate });
       });
@@ -343,7 +278,7 @@
       renderTable(localData);
     });
 
-    // Chức năng XÓA HỌC VIÊN
+    // CHỨC NĂNG XÓA
     window.deleteStudent = async function(id) {
       if(confirm("Bạn có chắc chắn muốn xóa học viên này không? Dữ liệu không thể khôi phục!")) {
         try {
@@ -356,53 +291,25 @@
       }
     }
 
-    // Render Table (Có gắn sự kiện onClick cho nút Xóa)
     function renderTable(dataArray) {
       tbody.innerHTML = '';
       if (dataArray.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-slate-500"><div class="flex flex-col items-center justify-center"><i class="ph ph-empty text-4xl mb-2 opacity-50"></i><p>Chưa có dữ liệu đăng ký nào.</p></div></td></tr>`;
         return;
       }
-
       dataArray.forEach((data) => {
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 tr-smooth border-b border-slate-100 dark:border-slate-800/50 last:border-0 group";
-        
         tr.innerHTML = `
-          <td class="p-4 pl-6">
-            <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-sm uppercase">
-                ${data.ho_ten ? data.ho_ten.charAt(0) : '?'}
-              </div>
-              <div>
-                <div class="font-semibold text-slate-800 dark:text-slate-200">${data.ho_ten || 'Không tên'}</div>
-                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"><i class="ph ph-envelope-simple mr-1"></i>${data.email || 'Không email'}</div>
-              </div>
-            </div>
-          </td>
-          <td class="p-4">
-            <div class="font-bold text-slate-700 dark:text-slate-300 tracking-wide">${data.so_dien_thoai || '---'}</div>
-          </td>
-          <td class="p-4">
-            <div class="text-sm font-medium text-slate-800 dark:text-slate-200">${data.khoa_hoc || 'Chưa chọn'}</div>
-            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 border border-slate-200 dark:border-slate-700 inline-block px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800">${data.nguon || 'Website'}</div>
-          </td>
-          <td class="p-4">
-            <div class="text-sm text-slate-600 dark:text-slate-300">${data.timeString.split(' ')[1]}</div>
-            <div class="text-xs text-slate-400 mt-0.5">${data.timeString.split(' ')[0]}</div>
-          </td>
-          <td class="p-4 text-center">
-            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 border border-blue-100 dark:border-blue-800">
-              <span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> MỚI
-            </span>
-          </td>
-          <td class="p-4 pr-6 text-right">
-            <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 tr-smooth" title="Chi tiết"><i class="ph ph-eye text-lg"></i></button>
-              
-              <button onclick="deleteStudent('${data.id}')" class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 tr-smooth" title="Xóa"><i class="ph ph-trash text-lg"></i></button>
-            </div>
-          </td>
+          <td class="p-4 pl-6"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-brand-100 dark:bg-brand-900/50 text-brand-600 dark:text-brand-400 flex items-center justify-center font-bold text-sm uppercase">${data.ho_ten ? data.ho_ten.charAt(0) : '?'}</div><div><div class="font-semibold text-slate-800 dark:text-slate-200">${data.ho_ten || 'Không tên'}</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"><i class="ph ph-envelope-simple mr-1"></i>${data.email || 'Không email'}</div></div></div></td>
+          <td class="p-4"><div class="font-bold text-slate-700 dark:text-slate-300 tracking-wide">${data.so_dien_thoai || '---'}</div></td>
+          <td class="p-4"><div class="text-sm font-medium text-slate-800 dark:text-slate-200">${data.khoa_hoc || 'Chưa chọn'}</div><div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 border border-slate-200 dark:border-slate-700 inline-block px-1.5 py-0.5 rounded-md bg-white dark:bg-slate-800">${data.nguon || 'Website'}</div></td>
+          <td class="p-4"><div class="text-sm text-slate-600 dark:text-slate-300">${data.timeString.split(' ')[1]}</div><div class="text-xs text-slate-400 mt-0.5">${data.timeString.split(' ')[0]}</div></td>
+          <td class="p-4 text-center"><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 border border-blue-100 dark:border-blue-800"><span class="w-1.5 h-1.5 rounded-full bg-brand-500 animate-pulse"></span> MỚI</span></td>
+          <td class="p-4 pr-6 text-right"><div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 tr-smooth" title="Chi tiết"><i class="ph ph-eye text-lg"></i></button>
+            <button onclick="deleteStudent('${data.id}')" class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 tr-smooth" title="Xóa"><i class="ph ph-trash text-lg"></i></button>
+          </div></td>
         `;
         tbody.appendChild(tr);
       });
@@ -410,10 +317,7 @@
 
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const keyword = e.target.value.toLowerCase();
-      const filteredData = localData.filter(student => 
-        (student.ho_ten || '').toLowerCase().includes(keyword) || 
-        (student.so_dien_thoai || '').includes(keyword)
-      );
+      const filteredData = localData.filter(student => (student.ho_ten || '').toLowerCase().includes(keyword) || (student.so_dien_thoai || '').includes(keyword));
       renderTable(filteredData);
       document.getElementById('count-display').innerText = filteredData.length;
     });
@@ -422,9 +326,7 @@
       if (localData.length === 0) { showToast('Không có dữ liệu để xuất!', 'error'); return; }
       let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
       csvContent += "Họ và tên,Số điện thoại,Email,Khóa học,Nguồn,Thời gian đăng ký\n";
-      localData.forEach(row => {
-        csvContent += `"${row.ho_ten || ''}","${row.so_dien_thoai || ''}","${row.email || ''}","${row.khoa_hoc || ''}","${row.nguon || ''}","${row.timeString || ''}"\n`;
-      });
+      localData.forEach(row => { csvContent += `"${row.ho_ten || ''}","${row.so_dien_thoai || ''}","${row.email || ''}","${row.khoa_hoc || ''}","${row.nguon || ''}","${row.timeString || ''}"\n`; });
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
@@ -435,3 +337,5 @@
       showToast('Đã xuất file CSV thành công!');
     }
   </script>
+</body>
+</html>
