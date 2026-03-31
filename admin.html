@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Tây Nguyên Phim</title>
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -18,12 +20,16 @@
     }
   </script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
     body { font-family: 'Inter', sans-serif; }
+    /* Thanh cuộn đẹp */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
     .dark ::-webkit-scrollbar-thumb { background: #475569; }
+    
+    /* Hiệu ứng mượt mà */
     .tr-smooth { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     @keyframes pulse-bg { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
     .skeleton { animation: pulse-bg 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
@@ -43,13 +49,26 @@
 
     <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
       <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 px-3">Quản lý</div>
-      <a href="#" id="menu-students" onclick="switchView('students', 'Tổng quan hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 bg-brand-600 text-white rounded-lg shadow-md shadow-brand-600/20 group tr-smooth"><i class="ph ph-users text-lg"></i><span class="font-medium text-sm">Học viên đăng ký</span></a>
-      <a href="#" id="menu-courses" onclick="switchView('courses', 'Quản lý Khóa học')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth"><i class="ph ph-graduation-cap text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Khóa học</span></a>
-      <a href="#" id="menu-emails" onclick="switchView('emails', 'Chiến dịch Email')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth"><i class="ph ph-envelope-simple text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Chiến dịch Email</span></a>
+      
+      <a href="#" id="menu-students" onclick="switchView('students', 'Tổng quan hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 bg-brand-600 text-white rounded-lg shadow-md shadow-brand-600/20 group tr-smooth">
+        <i class="ph ph-users text-lg"></i><span class="font-medium text-sm">Học viên đăng ký</span>
+      </a>
+      
+      <a href="#" id="menu-courses" onclick="switchView('courses', 'Quản lý Khóa học')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth">
+        <i class="ph ph-graduation-cap text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Khóa học</span>
+      </a>
+      
+      <a href="#" id="menu-emails" onclick="switchView('emails', 'Chiến dịch Email')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth">
+        <i class="ph ph-envelope-simple text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Chiến dịch Email</span>
+      </a>
       
       <div class="mt-6 mb-2 px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Hệ thống</div>
-      <a href="#" id="menu-settings" onclick="switchView('settings', 'Cài đặt hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth"><i class="ph ph-gear text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Cài đặt</span></a>
+      
+      <a href="#" id="menu-settings" onclick="switchView('settings', 'Cài đặt hệ thống')" class="menu-item flex items-center gap-3 px-3 py-2.5 hover:bg-slate-800/50 text-slate-300 rounded-lg group tr-smooth">
+        <i class="ph ph-gear text-lg group-hover:text-brand-500"></i><span class="font-medium text-sm group-hover:text-white">Cài đặt</span>
+      </a>
     </nav>
+    
     <div class="p-4 border-t border-slate-800">
       <a href="/" class="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white hover:bg-slate-800/50 rounded-lg tr-smooth"><i class="ph ph-arrow-left text-lg"></i><span class="font-medium text-sm">Về trang chủ web</span></a>
     </div>
@@ -80,6 +99,7 @@
           <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-users"></i></div><div><p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Tổng học viên</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-total">0</h3></div></div>
           <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-2xl"><i class="ph-fill ph-trend-up"></i></div><div><p class="text-sm text-slate-500 dark:text-slate-400 font-medium">Đăng ký hôm nay</p><h3 class="text-2xl font-bold text-slate-800 dark:text-white" id="stat-today">0</h3></div></div>
         </div>
+        
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col overflow-hidden">
           <div class="p-5 sm:p-6 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div><h2 class="text-lg font-bold text-slate-800 dark:text-white">Học viên mới đăng ký</h2></div>
@@ -102,6 +122,7 @@
           <div><h2 class="text-xl font-bold text-slate-800 dark:text-white">Danh sách Khóa học</h2><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Quản lý các khóa học đang mở tại Tây Nguyên Phim.</p></div>
           <button onclick="openCourseModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg shadow-md shadow-brand-500/20 tr-smooth"><i class="ph ph-plus text-lg"></i><span>Thêm khóa học</span></button>
         </div>
+        
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
@@ -117,11 +138,17 @@
           <div><h2 class="text-xl font-bold text-slate-800 dark:text-white">Lịch sử gửi Email</h2><p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Ghi chú lại các chiến dịch khuyến mãi, thông báo đã gửi cho học viên.</p></div>
           <button onclick="openEmailModal()" class="flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-lg shadow-md shadow-brand-500/20 tr-smooth"><i class="ph ph-paper-plane-right text-lg"></i><span>Soạn Email</span></button>
         </div>
+        
         <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
-              <thead><tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold"><th class="p-4 pl-6">Tiêu đề Chiến dịch</th><th class="p-4">Ngày gửi (Lưu vết)</th><th class="p-4 text-center">Trạng thái</th></tr></thead>
-              <tbody id="email-list" class="divide-y divide-slate-100 dark:divide-slate-800/50"><tr><td colspan="3" class="p-6"><div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div></td></tr></tbody>
+              <thead><tr class="bg-slate-50 dark:bg-slate-800/50 border-b border-slate-200 dark:border-slate-800 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 font-semibold">
+                <th class="p-4 pl-6">Tiêu đề Chiến dịch</th>
+                <th class="p-4">Số lượng</th>
+                <th class="p-4">Ngày gửi (Lưu vết)</th>
+                <th class="p-4 text-center">Trạng thái</th>
+              </tr></thead>
+              <tbody id="email-list" class="divide-y divide-slate-100 dark:divide-slate-800/50"><tr><td colspan="4" class="p-6"><div class="h-10 bg-slate-100 dark:bg-slate-800 rounded skeleton w-full"></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -131,29 +158,13 @@
         <div class="max-w-2xl">
           <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-6">Cấu hình chung</h2>
           <form id="settings-form" class="bg-white dark:bg-slate-900 p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-            <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tên Website</label>
-              <input type="text" id="set-name" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white">
-            </div>
+            <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Tên Website</label><input type="text" id="set-name" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white"></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Hotline chính</label>
-                <input type="text" id="set-phone" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white">
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Link Zalo tư vấn</label>
-                <input type="text" id="set-zalo" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white">
-              </div>
+              <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Hotline chính</label><input type="text" id="set-phone" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white"></div>
+              <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Link Zalo tư vấn</label><input type="text" id="set-zalo" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white"></div>
             </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email nhận thông báo (Admin)</label>
-              <input type="email" id="set-email" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white">
-            </div>
-            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end">
-              <button type="submit" id="btn-save-settings" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium shadow-md shadow-brand-500/20 tr-smooth flex items-center gap-2">
-                <i class="ph ph-floppy-disk text-lg"></i> Lưu thay đổi
-              </button>
-            </div>
+            <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Email nhận thông báo (Admin)</label><input type="email" id="set-email" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:outline-none focus:border-brand-500 dark:text-white"></div>
+            <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end"><button type="submit" id="btn-save-settings" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium shadow-md shadow-brand-500/20 tr-smooth flex items-center gap-2"><i class="ph ph-floppy-disk text-lg"></i> Lưu thay đổi</button></div>
           </form>
         </div>
       </div>
@@ -167,7 +178,7 @@
       <form id="course-form" class="p-6 space-y-4">
         <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tên khóa học</label><input type="text" id="c-name" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white"></div>
         <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Danh mục</label>
-          <select id="c-category" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white"><option>Kỹ Năng & MC</option><option>Diễn Viên</option><option>Thanh Nhạc</option><option>Người Mẫu</option></select>
+          <select id="c-category" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white"><option>Kỹ Năng & MC</option><option>Diễn Viên</option><option>Thanh Nhạc</option><option>Người Mẫu</option><option>Doanh Nghiệp</option></select>
         </div>
         <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Trạng thái</label>
           <select id="c-status" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white"><option>Đang mở</option><option>Tạm đóng</option></select>
@@ -181,9 +192,22 @@
     <div class="bg-white dark:bg-slate-900 rounded-2xl w-full max-w-2xl shadow-2xl transform scale-95 transition-transform duration-300" id="email-modal-content">
       <div class="p-6 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center"><h3 class="text-lg font-bold text-slate-800 dark:text-white">Lưu log Chiến dịch Email</h3><button onclick="closeEmailModal()" class="text-slate-400 hover:text-white"><i class="ph ph-x text-xl"></i></button></div>
       <form id="email-form" class="p-6 space-y-4">
-        <div class="bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 text-sm p-3 rounded-lg flex items-start gap-2 mb-4"><i class="ph-fill ph-info text-lg"></i><p>Tính năng lưu vết chiến dịch (Logging). Để gửi mail tự động thực tế, bạn cần cấu hình thêm Backend API.</p></div>
+        <div class="bg-blue-50 dark:bg-blue-900/30 text-brand-600 dark:text-brand-400 text-sm p-3 rounded-lg flex items-start gap-2 mb-4"><i class="ph-fill ph-info text-lg mt-0.5"></i><p>Tính năng lưu vết chiến dịch (Logging). Để gửi mail tự động thực tế, bạn cần cấu hình thêm Backend API (ví dụ: Node.js + SendGrid).</p></div>
+        
         <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Tiêu đề chiến dịch</label><input type="text" id="e-title" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white" placeholder="VD: Khuyến mãi Tết 2026"></div>
-        <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nội dung (Ghi chú)</label><textarea id="e-content" rows="4" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white" placeholder="Tóm tắt nội dung mail..."></textarea></div>
+        
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Gửi đến (Chọn học viên)</label>
+          <div class="flex items-center gap-2 mb-2">
+            <button type="button" onclick="selectAllEmails()" class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 tr-smooth">Chọn tất cả</button>
+            <button type="button" onclick="deselectAllEmails()" class="text-xs bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1 rounded-md hover:bg-slate-300 dark:hover:bg-slate-600 tr-smooth">Bỏ chọn</button>
+          </div>
+          <div id="email-recipients-list" class="max-h-40 overflow-y-auto bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg p-2 space-y-1">
+            </div>
+        </div>
+
+        <div><label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Nội dung (Ghi chú)</label><textarea id="e-content" rows="4" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg focus:border-brand-500 outline-none dark:text-white" placeholder="Tóm tắt nội dung mail..."></textarea></div>
+        
         <div class="pt-4 flex justify-end gap-3"><button type="button" onclick="closeEmailModal()" class="px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg font-medium">Hủy</button><button type="submit" id="btn-save-email" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-medium">Lưu vào lịch sử</button></div>
       </form>
     </div>
@@ -192,6 +216,7 @@
   <div id="toast-container" class="fixed bottom-5 right-5 z-[100] flex flex-col gap-3"></div>
 
   <script>
+    // Đổi view (SPA Routing)
     function switchView(viewId, pageTitleText) {
       document.querySelectorAll('.view-panel').forEach(panel => { panel.classList.remove('block'); panel.classList.add('hidden'); });
       document.getElementById('view-' + viewId).classList.remove('hidden'); document.getElementById('view-' + viewId).classList.add('block');
@@ -201,24 +226,29 @@
       document.getElementById('page-title').innerText = pageTitleText;
     }
 
+    // Toggle Menu Mobile & Dark Mode
     function toggleSidebar() { document.getElementById('sidebar').classList.toggle('-translate-x-full'); document.getElementById('sidebar-overlay').classList.toggle('hidden'); }
     function toggleTheme() { const html = document.documentElement; if (html.classList.contains('dark')) { html.classList.remove('dark'); localStorage.setItem('theme', 'light'); } else { html.classList.add('dark'); localStorage.setItem('theme', 'dark'); } }
     if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) { document.documentElement.classList.add('dark'); }
 
+    // Toast Notification
     function showToast(message, type = 'success') {
       const container = document.getElementById('toast-container'); const toast = document.createElement('div');
       toast.className = `flex items-center gap-3 px-4 py-3 rounded-xl shadow-lg transform transition-all duration-300 translate-y-10 opacity-0 border ${type === 'success' ? 'bg-white dark:bg-slate-800 border-emerald-100 text-slate-800 dark:text-white' : 'bg-white dark:bg-slate-800 border-red-100 text-slate-800 dark:text-white'}`;
-      toast.innerHTML = `<div class="w-8 h-8 flex items-center justify-center rounded-full ${type === 'success' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}"><i class="ph-fill ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'} text-xl"></i></div><p class="text-sm font-medium">${message}</p>`;
+      toast.innerHTML = `<div class="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full ${type === 'success' ? 'bg-emerald-100 text-emerald-600' : 'bg-red-100 text-red-600'}"><i class="ph-fill ${type === 'success' ? 'ph-check-circle' : 'ph-warning-circle'} text-xl"></i></div><p class="text-sm font-medium">${message}</p>`;
       container.appendChild(toast);
       setTimeout(() => toast.classList.remove('translate-y-10', 'opacity-0'), 10);
       setTimeout(() => { toast.classList.add('opacity-0', 'translate-x-10'); setTimeout(() => toast.remove(), 300); }, 3000);
     }
 
+    // Modal Khóa học & Email UI
     function openCourseModal() { const m = document.getElementById('course-modal'); m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('course-modal-content').classList.remove('scale-95'); }, 10); }
     function closeCourseModal() { const m = document.getElementById('course-modal'); m.classList.add('opacity-0'); document.getElementById('course-modal-content').classList.add('scale-95'); setTimeout(() => { m.classList.add('hidden'); document.getElementById('course-form').reset(); }, 300); }
-
-    function openEmailModal() { const m = document.getElementById('email-modal'); m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('email-modal-content').classList.remove('scale-95'); }, 10); }
     function closeEmailModal() { const m = document.getElementById('email-modal'); m.classList.add('opacity-0'); document.getElementById('email-modal-content').classList.add('scale-95'); setTimeout(() => { m.classList.add('hidden'); document.getElementById('email-form').reset(); }, 300); }
+    
+    // Checkbox buttons
+    window.selectAllEmails = function() { document.querySelectorAll('input[name="recipients"]').forEach(cb => cb.checked = true); }
+    window.deselectAllEmails = function() { document.querySelectorAll('input[name="recipients"]').forEach(cb => cb.checked = false); }
   </script>
 
   <script type="module">
@@ -237,9 +267,12 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    /* 1. HỌC VIÊN */
+    /* ----------------------------------------------------
+       1. QUẢN LÝ HỌC VIÊN
+    ----------------------------------------------------- */
     const tbodyStudents = document.getElementById('student-list');
-    let localStudents = [];
+    let localStudents = []; // Lưu lại để dùng cho Tìm kiếm & Gửi Email
+
     onSnapshot(query(collection(db, "hoc_vien"), orderBy("ngay_tao", "desc")), (snapshot) => {
       localStudents = []; let todayCount = 0; const todayString = new Date().toLocaleDateString('vi-VN');
       snapshot.forEach((doc) => {
@@ -251,18 +284,41 @@
       renderStudentTable(localStudents);
     });
 
-    window.deleteStudent = async function(id) { if(confirm("Xóa học viên này?")) { try { await deleteDoc(doc(db, "hoc_vien", id)); showToast('Đã xóa!'); } catch (e) { showToast('Lỗi xóa!', 'error'); } } }
+    window.deleteStudent = async function(id) { if(confirm("Xóa học viên này khỏi hệ thống?")) { try { await deleteDoc(doc(db, "hoc_vien", id)); showToast('Đã xóa!'); } catch (e) { showToast('Lỗi xóa!', 'error'); } } }
+    
     function renderStudentTable(arr) {
       tbodyStudents.innerHTML = '';
       if (arr.length === 0) return tbodyStudents.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-500">Chưa có dữ liệu.</td></tr>`;
       arr.forEach((d) => {
         const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800/50";
-        tr.innerHTML = `<td class="p-4 pl-6"><div class="font-semibold text-slate-800 dark:text-slate-200">${d.ho_ten||'Không tên'}</div><div class="text-xs text-slate-500">${d.email||''}</div></td><td class="p-4 font-bold text-slate-700 dark:text-slate-300">${d.so_dien_thoai||'---'}</td><td class="p-4 text-sm dark:text-slate-200">${d.khoa_hoc||'---'}</td><td class="p-4 text-sm dark:text-slate-300">${d.timeString}</td><td class="p-4"><span class="px-2 py-1 rounded text-xs bg-blue-50 text-brand-600">MỚI</span></td><td class="p-4 pr-6 text-right"><button onclick="deleteStudent('${d.id}')" class="text-red-500 hover:text-red-700"><i class="ph ph-trash text-lg"></i></button></td>`;
+        tr.innerHTML = `
+          <td class="p-4 pl-6"><div class="font-semibold text-slate-800 dark:text-slate-200">${d.ho_ten||'Không tên'}</div><div class="text-xs text-slate-500">${d.email||''}</div></td>
+          <td class="p-4 font-bold text-slate-700 dark:text-slate-300">${d.so_dien_thoai||'---'}</td>
+          <td class="p-4 text-sm dark:text-slate-200">${d.khoa_hoc||'---'}</td>
+          <td class="p-4 text-sm dark:text-slate-300">${d.timeString}</td>
+          <td class="p-4 text-center"><span class="px-2 py-1 rounded text-xs bg-blue-50 text-brand-600">MỚI</span></td>
+          <td class="p-4 pr-6 text-right"><button onclick="deleteStudent('${d.id}')" class="text-red-500 hover:text-red-700"><i class="ph ph-trash text-lg"></i></button></td>
+        `;
         tbodyStudents.appendChild(tr);
       });
     }
 
-    /* 2. KHÓA HỌC */
+    // Tìm kiếm nhanh & Xuất CSV
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const k = e.target.value.toLowerCase();
+      renderStudentTable(localStudents.filter(s => (s.ho_ten || '').toLowerCase().includes(k) || (s.so_dien_thoai || '').includes(k)));
+    });
+    window.exportCSV = function() {
+      if (localStudents.length === 0) return showToast('Không có dữ liệu để xuất!', 'error');
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF" + "Họ và tên,Số điện thoại,Email,Khóa học,Nguồn,Thời gian đăng ký\n";
+      localStudents.forEach(r => { csvContent += `"${r.ho_ten||''}","${r.so_dien_thoai||''}","${r.email||''}","${r.khoa_hoc||''}","${r.nguon||''}","${r.timeString||''}"\n`; });
+      const link = document.createElement("a"); link.setAttribute("href", encodeURI(csvContent)); link.setAttribute("download", `Hoc_Vien_${new Date().toLocaleDateString('vi-VN').replace(/\//g,'-')}.csv`);
+      document.body.appendChild(link); link.click(); document.body.removeChild(link); showToast('Đã xuất file CSV!');
+    }
+
+    /* ----------------------------------------------------
+       2. QUẢN LÝ KHÓA HỌC
+    ----------------------------------------------------- */
     const tbodyCourses = document.getElementById('course-list');
     onSnapshot(query(collection(db, "khoa_hoc"), orderBy("ngay_tao", "desc")), (snapshot) => {
       tbodyCourses.innerHTML = '';
@@ -276,31 +332,55 @@
 
     document.getElementById('course-form').addEventListener('submit', async (e) => {
       e.preventDefault(); const btn = document.getElementById('btn-save-course'); btn.innerHTML = '⏳ Đang lưu...'; btn.disabled = true;
-      try { await addDoc(collection(db, "khoa_hoc"), { ten_khoa_hoc: document.getElementById('c-name').value.trim(), danh_muc: document.getElementById('c-category').value, trang_thai: document.getElementById('c-status').value, ngay_tao: serverTimestamp() }); closeCourseModal(); showToast('Thêm khóa học thành công!'); } 
+      try { await addDoc(collection(db, "khoa_hoc"), { ten_khoa_hoc: document.getElementById('c-name').value.trim(), danh_muc: document.getElementById('c-category').value, trang_thai: document.getElementById('c-status').value, ngay_tao: serverTimestamp() }); closeCourseModal(); showToast('Đã thêm khóa học!'); } 
       catch (error) { showToast('Lỗi khi thêm', 'error'); } finally { btn.innerHTML = 'Lưu'; btn.disabled = false; }
     });
     window.deleteCourse = async function(id) { if(confirm("Xóa khóa học này?")) { await deleteDoc(doc(db, "khoa_hoc", id)); showToast('Đã xóa!'); } }
 
-    /* 3. CHIẾN DỊCH EMAIL */
+    /* ----------------------------------------------------
+       3. QUẢN LÝ CHIẾN DỊCH EMAIL
+    ----------------------------------------------------- */
     const tbodyEmails = document.getElementById('email-list');
     onSnapshot(query(collection(db, "chien_dich_email"), orderBy("ngay_gui", "desc")), (snapshot) => {
       tbodyEmails.innerHTML = '';
-      if (snapshot.empty) return tbodyEmails.innerHTML = `<tr><td colspan="3" class="p-8 text-center text-slate-500">Chưa có chiến dịch nào được ghi lại.</td></tr>`;
+      if (snapshot.empty) return tbodyEmails.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-500">Chưa có chiến dịch nào được ghi lại.</td></tr>`;
       snapshot.forEach((doc) => {
         const d = doc.data(); const tr = document.createElement('tr'); tr.className = "hover:bg-slate-50 dark:hover:bg-slate-800/80 border-b border-slate-100 dark:border-slate-800/50";
         let t = "Vừa xong"; if (d.ngay_gui) t = d.ngay_gui.toDate().toLocaleString('vi-VN');
-        tr.innerHTML = `<td class="p-4 pl-6 font-semibold dark:text-white">${d.tieu_de}</td><td class="p-4 text-sm dark:text-slate-300">${t}</td><td class="p-4 text-center"><span class="px-2 py-1 rounded text-xs bg-emerald-50 text-emerald-600 border border-emerald-200">Đã lưu vết</span></td>`;
+        tr.innerHTML = `<td class="p-4 pl-6 font-semibold dark:text-white">${d.tieu_de}</td><td class="p-4 text-sm font-medium text-brand-600 dark:text-brand-400">${d.so_luong_gui || 0} người</td><td class="p-4 text-sm dark:text-slate-300">${t}</td><td class="p-4 text-center"><span class="px-2 py-1 rounded text-xs bg-emerald-50 text-emerald-600 border border-emerald-200">Đã lưu vết</span></td>`;
         tbodyEmails.appendChild(tr);
       });
     });
 
+    // Mở Modal và tự động đổ danh sách Checkbox những người có Email
+    window.openEmailModal = function() { 
+      const m = document.getElementById('email-modal'); m.classList.remove('hidden'); setTimeout(() => { m.classList.remove('opacity-0'); document.getElementById('email-modal-content').classList.remove('scale-95'); }, 10); 
+      const listContainer = document.getElementById('email-recipients-list'); listContainer.innerHTML = '';
+      const studentsWithEmail = localStudents.filter(s => s.email && s.email.trim() !== '');
+      if(studentsWithEmail.length === 0) { listContainer.innerHTML = '<p class="text-sm text-red-500 p-2">Hệ thống chưa có học viên nào có email.</p>'; } 
+      else {
+        studentsWithEmail.forEach(s => {
+          listContainer.innerHTML += `<label class="flex items-center gap-3 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded cursor-pointer tr-smooth">
+              <input type="checkbox" name="recipients" value="${s.email}" class="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500 bg-white dark:bg-slate-900 cursor-pointer">
+              <span class="text-sm dark:text-slate-300 font-medium">${s.ho_ten} <span class="text-slate-500 font-normal">(${s.email})</span></span></label>`;
+        });
+      }
+    }
+
     document.getElementById('email-form').addEventListener('submit', async (e) => {
-      e.preventDefault(); const btn = document.getElementById('btn-save-email'); btn.innerHTML = '⏳ Đang lưu...'; btn.disabled = true;
-      try { await addDoc(collection(db, "chien_dich_email"), { tieu_de: document.getElementById('e-title').value.trim(), noi_dung: document.getElementById('e-content').value, ngay_gui: serverTimestamp() }); closeEmailModal(); showToast('Đã lưu chiến dịch!'); } 
-      catch (error) { showToast('Lỗi khi lưu', 'error'); } finally { btn.innerHTML = 'Lưu vào lịch sử'; btn.disabled = false; }
+      e.preventDefault(); 
+      const selectedEmails = Array.from(document.querySelectorAll('input[name="recipients"]:checked')).map(cb => cb.value);
+      if (selectedEmails.length === 0) return showToast('Vui lòng chọn người nhận!', 'error');
+      const btn = document.getElementById('btn-save-email'); btn.innerHTML = '⏳ Đang lưu...'; btn.disabled = true;
+      try { 
+        await addDoc(collection(db, "chien_dich_email"), { tieu_de: document.getElementById('e-title').value.trim(), noi_dung: document.getElementById('e-content').value, nguoi_nhan: selectedEmails, so_luong_gui: selectedEmails.length, ngay_gui: serverTimestamp() }); 
+        closeEmailModal(); showToast(`Đã lưu chiến dịch (${selectedEmails.length} người)!`); 
+      } catch (error) { showToast('Lỗi khi lưu', 'error'); } finally { btn.innerHTML = 'Lưu vào lịch sử'; btn.disabled = false; }
     });
 
-    /* 4. CÀI ĐẶT HỆ THỐNG */
+    /* ----------------------------------------------------
+       4. CÀI ĐẶT HỆ THỐNG
+    ----------------------------------------------------- */
     const settingsRef = doc(db, "cai_dat", "chung");
     getDoc(settingsRef).then((docSnap) => {
       if (docSnap.exists()) {
@@ -314,16 +394,8 @@
 
     document.getElementById('settings-form').addEventListener('submit', async (e) => {
       e.preventDefault(); const btn = document.getElementById('btn-save-settings'); btn.innerHTML = '⏳ Đang lưu...'; btn.disabled = true;
-      try {
-        await setDoc(settingsRef, {
-          ten_web: document.getElementById('set-name').value.trim(),
-          hotline: document.getElementById('set-phone').value.trim(),
-          zalo: document.getElementById('set-zalo').value.trim(),
-          email: document.getElementById('set-email').value.trim()
-        }, { merge: true });
-        showToast('Đã cập nhật cài đặt thành công!');
-      } catch (error) { showToast('Lỗi khi lưu cài đặt', 'error'); } 
-      finally { btn.innerHTML = '<i class="ph ph-floppy-disk text-lg"></i> Lưu thay đổi'; btn.disabled = false; }
+      try { await setDoc(settingsRef, { ten_web: document.getElementById('set-name').value.trim(), hotline: document.getElementById('set-phone').value.trim(), zalo: document.getElementById('set-zalo').value.trim(), email: document.getElementById('set-email').value.trim() }, { merge: true }); showToast('Cập nhật cài đặt thành công!'); } 
+      catch (error) { showToast('Lỗi khi lưu cài đặt', 'error'); } finally { btn.innerHTML = '<i class="ph ph-floppy-disk text-lg"></i> Lưu thay đổi'; btn.disabled = false; }
     });
 
   </script>
