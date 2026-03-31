@@ -1127,67 +1127,161 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeM()});
 <script>
   // 1. KHO BÀI VIẾT CHI TIẾT CHO TỪNG KHÓA HỌC
   // Bạn có thể tự do viết nội dung dài ngoằng, in đậm, gạch đầu dòng vào đây
-  <script type="module">
-  // Lấy thêm công cụ getDocs và where từ thư viện Firebase đã có sẵn trên web của bạn
-  import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
-  import { app } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"; // Lấy app từ phần code form của bạn
-  
-  const db = getFirestore();
+ <script type="module">
+  // GỘP CHUNG THƯ VIỆN FIREBASE (Cho cả Form và Bài viết)
+  import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, where, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-  // Hàm này sẽ tự động gọi khi khách bấm vào thẻ khóa học ngoài web
-  window.fetchAndShowCourseDetail = async function(name, category, shortDesc, imgSrc, tag) {
-    // 1. Mở popup với thông tin cơ bản trước (hiện dòng Loading...)
-    document.getElementById('dt-title').innerText = name;
-    document.getElementById('dt-category').innerText = category;
-    document.getElementById('dt-img').src = imgSrc;
-    document.getElementById('dt-content').innerHTML = '<p style="text-align: center; color: #7a9bbf;">⏳ Đang tải nội dung bài viết từ hệ thống...</p>';
-    
-    const tagEl = document.getElementById('dt-tag');
-    if(tag) { tagEl.innerText = tag; tagEl.style.display = 'inline-block'; } else { tagEl.style.display = 'none'; }
-    
-    document.getElementById('dt-btn-register').onclick = function() { closeDetailM(); openM(name); };
-    document.getElementById('detail-modal').classList.add('open');
-    document.body.style.overflow = 'hidden';
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4mM5GhVzMtlCiymFrKgfjR6n3f2X85yE",
+    authDomain: "taynguyenphim-web.firebaseapp.com",
+    projectId: "taynguyenphim-web",
+    storageBucket: "taynguyenphim-web.firebasestorage.app",
+    messagingSenderId: "608085042835",
+    appId: "1:608085042835:web:da3a8c05fe79d6cf970f66"
+  };
 
-    // 2. Chạy lên Firebase tìm bài viết có tên khớp với tên thẻ
-    try {
-      const q = query(collection(db, "khoa_hoc"), where("ten_khoa_hoc", "==", name));
-      const querySnapshot = await getDocs(q);
-      
-      let htmlContent = "";
-      if (!querySnapshot.empty) {
-        htmlContent = querySnapshot.docs[0].data().noi_dung; // Bắt được bài viết Admin vừa soạn!
-      } 
-      
-      // Nếu Admin chưa soạn bài cho khóa này, tự động lấy dòng mô tả ngắn làm tạm
-      if (!htmlContent || htmlContent.trim() === "") {
-        htmlContent = `<p style="font-size: 15px;">${shortDesc}</p><br><p><em>Vui lòng đăng ký để trung tâm liên hệ tư vấn lộ trình học chi tiết nhất cho bạn!</em></p>`;
+  // Khởi tạo Firebase 1 lần duy nhất (Chống xung đột)
+  const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+  const db = getFirestore(app);
+
+  /* =========================================================
+     1. XỬ LÝ GỬI FORM ĐĂNG KÝ VÀ FORM LIÊN HỆ
+     ========================================================= */
+  const popupForm = document.getElementById('popup-form');
+  if (popupForm) {
+    popupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('m-submit-btn');
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '⏳ Đang xử lý...';
+      btn.disabled = true;
+
+      try {
+        await addDoc(collection(db, "hoc_vien"), {
+          ho_ten: document.getElementById('m-name').value.trim(),
+          so_dien_thoai: document.getElementById('m-phone').value.trim(),
+          tuoi: document.getElementById('m-age').value.trim(),
+          email: document.getElementById('m-email').value.trim(),
+          khoa_hoc: document.getElementById('m-course').value,
+          trinh_do: document.getElementById('m-level').value,
+          nguon: "Popup Đăng Ký",
+          ngay_tao: serverTimestamp()
+        });
+
+        closeM();
+        toast('🎉 Đăng ký thành công! Chúng tôi sẽ liên hệ bạn sớm.', true);
+        popupForm.reset(); 
+      } catch (error) {
+        toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
+      } finally {
+        btn.innerHTML = oldText;
+        btn.disabled = false;
       }
-      
-      // Đổ bài viết thật vào
-      document.getElementById('dt-content').innerHTML = htmlContent;
-
-    } catch (error) {
-      console.error("Lỗi lấy bài viết:", error);
-      document.getElementById('dt-content').innerHTML = '<p style="color:red; text-align:center;">Lỗi kết nối. Vui lòng thử lại sau.</p>';
-    }
+    });
   }
 
-  // Tự động gắn sự kiện click cho tất cả các thẻ khóa học
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.cc').forEach(card => {
-      card.addEventListener('click', function(e) {
-        if(e.target.closest('.bte')) return;
-        const name = this.querySelector('.cname').innerText;
-        const category = this.querySelector('.ccat').innerText;
-        const shortDesc = this.querySelector('.cdesc').innerText;
-        const imgSrc = this.querySelector('.cthumb img').src;
-        const tagEl = this.querySelector('.ctag');
-        const tag = tagEl ? tagEl.innerText : '';
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('cf-submit-btn');
+      const oldText = btn.innerHTML;
+      btn.innerHTML = '⏳ Đang gửi...';
+      btn.disabled = true;
 
-        // Kích hoạt bệ phóng Firebase!
-        window.fetchAndShowCourseDetail(name, category, shortDesc, imgSrc, tag);
-      });
+      try {
+        await addDoc(collection(db, "hoc_vien"), {
+          ho_ten: document.getElementById('cf-name').value.trim(),
+          so_dien_thoai: document.getElementById('cf-phone').value.trim(),
+          email: document.getElementById('cf-email').value.trim(),
+          khoa_hoc: document.getElementById('cf-course').value,
+          loi_nhan: document.getElementById('cf-msg').value.trim(),
+          nguon: "Form Liên Hệ",
+          ngay_tao: serverTimestamp()
+        });
+
+        toast('✅ Đã gửi! Chúng tôi sẽ liên hệ sớm nhất.', true);
+        contactForm.reset(); 
+      } catch (error) {
+        toast('❌ Lỗi kết nối, vui lòng thử lại!', false);
+      } finally {
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+      }
+    });
+  }
+
+  /* =========================================================
+     2. XỬ LÝ POPUP ĐỌC BÀI VIẾT KHÓA HỌC (TỪ FIREBASE)
+     ========================================================= */
+  // Khai báo hàm đóng cửa sổ ra toàn cục
+  window.closeDetailM = function() {
+    document.getElementById('detail-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  window.closeDetailBg = function(e) {
+    if (e.target === document.getElementById('detail-modal')) closeDetailM();
+  };
+
+  // Lắng nghe sự kiện click trên TẤT CẢ thẻ khóa học
+  document.querySelectorAll('.cc').forEach(card => {
+    card.addEventListener('click', async function(e) {
+      // Bỏ qua nếu khách bấm thẳng vào nút Đăng Ký
+      if(e.target.closest('.bte')) return; 
+
+      // Lấy thông tin từ thẻ HTML
+      const name = this.querySelector('.cname').innerText;
+      const category = this.querySelector('.ccat').innerText;
+      const shortDesc = this.querySelector('.cdesc').innerText;
+      const imgSrc = this.querySelector('.cthumb img').src;
+      const tagEl = this.querySelector('.ctag');
+      const tag = tagEl ? tagEl.innerText : '';
+
+      // Đổ thông tin lên Popup
+      document.getElementById('dt-title').innerText = name;
+      document.getElementById('dt-category').innerText = category;
+      document.getElementById('dt-img').src = imgSrc;
+      document.getElementById('dt-content').innerHTML = '<p style="text-align: center; color: #7a9bbf; margin-top: 20px;">⏳ Đang tải nội dung bài viết từ hệ thống...</p>';
+      
+      if(tag) { 
+        document.getElementById('dt-tag').innerText = tag; 
+        document.getElementById('dt-tag').style.display = 'inline-block'; 
+      } else { 
+        document.getElementById('dt-tag').style.display = 'none'; 
+      }
+      
+      // Nút Đăng ký khóa này mở Form Đăng ký
+      document.getElementById('dt-btn-register').onclick = function() { 
+        closeDetailM(); 
+        if(typeof openM === 'function') openM(name); 
+      };
+      
+      // Mở Popup lên
+      document.getElementById('detail-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+
+      // Kéo bài viết từ Firebase Admin về
+      try {
+        const q = query(collection(db, "khoa_hoc"), where("ten_khoa_hoc", "==", name));
+        const querySnapshot = await getDocs(q);
+        
+        let htmlContent = "";
+        if (!querySnapshot.empty) {
+          htmlContent = querySnapshot.docs[0].data().noi_dung;
+        }
+        
+        // Nếu Admin chưa viết bài dài thì dùng mô tả ngắn đắp vào
+        if (!htmlContent || htmlContent.trim() === "") {
+          htmlContent = `<p style="font-size: 15px;">${shortDesc}</p><br><p><em>Vui lòng đăng ký để trung tâm liên hệ tư vấn lộ trình học chi tiết nhất cho bạn!</em></p>`;
+        }
+        
+        document.getElementById('dt-content').innerHTML = htmlContent;
+
+      } catch (error) {
+        console.error("Lỗi:", error);
+        document.getElementById('dt-content').innerHTML = '<p style="color:red; text-align:center;">Lỗi kết nối máy chủ. Vui lòng thử lại sau.</p>';
+      }
     });
   });
 </script>
