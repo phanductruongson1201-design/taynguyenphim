@@ -297,9 +297,9 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+    // Thêm doc và deleteDoc vào danh sách công cụ
+    import { getFirestore, collection, query, orderBy, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
-    // Cấu hình Firebase gốc của bạn
     const firebaseConfig = {
       apiKey: "AIzaSyA4mM5GhVzMtlCiymFrKgfjR6n3f2X85yE",
       authDomain: "taynguyenphim-web.firebaseapp.com",
@@ -312,15 +312,13 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const tbody = document.getElementById('student-list');
-    
-    // Lưu trữ data cục bộ để làm tính năng Search và Export
     let localData = [];
 
     const q = query(collection(db, "hoc_vien"), orderBy("ngay_tao", "desc"));
 
     // Lắng nghe dữ liệu
     onSnapshot(q, (snapshot) => {
-      localData = []; // Reset array
+      localData = []; 
       let todayCount = 0;
       const todayString = new Date().toLocaleDateString('vi-VN');
 
@@ -339,24 +337,28 @@
         localData.push({ id: doc.id, ...data, timeString, rawDate });
       });
 
-      // Update Thống kê Dashboard
       document.getElementById('stat-total').innerText = localData.length;
       document.getElementById('stat-today').innerText = todayCount;
       document.getElementById('count-display').innerText = localData.length;
-
-      // Render Table
       renderTable(localData);
-      showToast('Đã đồng bộ dữ liệu mới nhất!');
-
-    }, (error) => {
-        console.error("Lỗi khi tải dữ liệu:", error);
-        tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-red-500 font-medium">Lỗi kết nối database. Hãy kiểm tra rules Firebase.</td></tr>`;
     });
 
-    // Hàm Render Table với UI Tailwind mới
+    // Chức năng XÓA HỌC VIÊN
+    window.deleteStudent = async function(id) {
+      if(confirm("Bạn có chắc chắn muốn xóa học viên này không? Dữ liệu không thể khôi phục!")) {
+        try {
+          await deleteDoc(doc(db, "hoc_vien", id));
+          showToast('Đã xóa học viên thành công!');
+        } catch (error) {
+          console.error("Lỗi xóa: ", error);
+          showToast('Lỗi khi xóa, vui lòng thử lại!', 'error');
+        }
+      }
+    }
+
+    // Render Table (Có gắn sự kiện onClick cho nút Xóa)
     function renderTable(dataArray) {
       tbody.innerHTML = '';
-      
       if (dataArray.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" class="p-12 text-center text-slate-500"><div class="flex flex-col items-center justify-center"><i class="ph ph-empty text-4xl mb-2 opacity-50"></i><p>Chưa có dữ liệu đăng ký nào.</p></div></td></tr>`;
         return;
@@ -397,7 +399,8 @@
           <td class="p-4 pr-6 text-right">
             <div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
               <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 tr-smooth" title="Chi tiết"><i class="ph ph-eye text-lg"></i></button>
-              <button class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 tr-smooth" title="Xóa"><i class="ph ph-trash text-lg"></i></button>
+              
+              <button onclick="deleteStudent('${data.id}')" class="w-8 h-8 flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:text-red-500 dark:hover:text-red-400 tr-smooth" title="Xóa"><i class="ph ph-trash text-lg"></i></button>
             </div>
           </td>
         `;
@@ -405,7 +408,6 @@
       });
     }
 
-    // Tính năng Bonus 1: Live Search
     document.getElementById('searchInput').addEventListener('input', (e) => {
       const keyword = e.target.value.toLowerCase();
       const filteredData = localData.filter(student => 
@@ -416,27 +418,13 @@
       document.getElementById('count-display').innerText = filteredData.length;
     });
 
-    // Tính năng Bonus 2: Export CSV
     window.exportCSV = function() {
-      if (localData.length === 0) {
-        showToast('Không có dữ liệu để xuất!', 'error');
-        return;
-      }
-      
-      let csvContent = "data:text/csv;charset=utf-8,\uFEFF"; // Ký tự BOM để Excel đọc được tiếng Việt
+      if (localData.length === 0) { showToast('Không có dữ liệu để xuất!', 'error'); return; }
+      let csvContent = "data:text/csv;charset=utf-8,\uFEFF";
       csvContent += "Họ và tên,Số điện thoại,Email,Khóa học,Nguồn,Thời gian đăng ký\n";
-      
       localData.forEach(row => {
-        let name = `"${row.ho_ten || ''}"`;
-        let phone = `"${row.so_dien_thoai || ''}"`;
-        let email = `"${row.email || ''}"`;
-        let course = `"${row.khoa_hoc || ''}"`;
-        let source = `"${row.nguon || ''}"`;
-        let time = `"${row.timeString || ''}"`;
-        
-        csvContent += `${name},${phone},${email},${course},${source},${time}\n`;
+        csvContent += `"${row.ho_ten || ''}","${row.so_dien_thoai || ''}","${row.email || ''}","${row.khoa_hoc || ''}","${row.nguon || ''}","${row.timeString || ''}"\n`;
       });
-      
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
@@ -444,9 +432,6 @@
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      
       showToast('Đã xuất file CSV thành công!');
     }
   </script>
-</body>
-</html>
