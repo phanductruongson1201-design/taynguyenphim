@@ -871,20 +871,20 @@ footer{background:var(--black);border-top:1px solid rgba(26,111,196,.14);padding
 </footer>
 
 <div class="mover" id="detail-modal" onclick="closeDetailBg(event)">
-  <div class="mbox" style="max-width: 850px; padding: 0; overflow: hidden;">
-    <button class="mcls" onclick="closeDetailM()" style="position: absolute; top: 12px; right: 12px; z-index: 10; background: rgba(255,255,255,0.9); box-shadow: 0 2px 10px rgba(0,0,0,0.1);">✕</button>
-    <div style="width: 100%; height: 180px; position: relative;">
+  <div class="mbox" style="max-width: 850px; padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 90vh;"> 
+    <button class="mcls" onclick="closeDetailM()" style="position: absolute; top: 12px; right: 12px; z-index: 50; background: white; border-radius: 50%; width: 30px; height: 30px; border: 1px solid #ddd;">✕</button>
+    <div style="width: 100%; height: 200px; flex-shrink: 0; position: relative;">
       <img id="dt-img" src="" style="width: 100%; height: 100%; object-fit: cover;">
-      <div id="dt-tag" style="position: absolute; top: 16px; left: 16px; background: #e53935; color: white; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">HOT</div>
+      <div id="dt-tag" style="position: absolute; top: 16px; left: 16px; background: #e53935; color: white; padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; z-index: 10;">HOT</div>
     </div>
-    <div style="padding: 30px; text-align: left;">
+    <div style="padding: 24px 30px; flex-grow: 1; overflow-y: auto; text-align: left;" id="scroll-area">
       <div class="mey" id="dt-category" style="margin-bottom: 8px;">Kỹ Năng & MC</div>
       <h3 class="mtitle" id="dt-title" style="margin-bottom: 16px; font-size: 1.7rem; color: var(--gold-l);">Đào Tạo MC Chuyên Nghiệp</h3>
-      <div id="dt-content" style="color: var(--text2); font-size: 15px; line-height: 1.8; max-height: 55vh; overflow-y: auto; overflow-x: hidden; padding-right: 15px; margin-bottom: 24px;"></div>
-      <div style="display: flex; gap: 12px; justify-content: flex-end; border-top: 1px solid var(--g200); padding-top: 20px;">
-        <button style="padding: 10px 24px; border-radius: 50px; font-weight: 600; font-size: 14px; cursor: pointer; border: 1.5px solid var(--g400); background: transparent; color: var(--text);" onclick="closeDetailM()">Đóng</button>
-        <button id="dt-btn-register" class="bp" style="padding: 10px 28px; font-size: 14px; border: none; margin: 0;">🚀 Đăng Ký Khóa Này</button>
-      </div>
+      <div id="dt-content" style="color: var(--text2); font-size: 15px; line-height: 1.8; overflow-x: hidden;"></div>
+    </div>
+    <div style="padding: 15px 30px; border-top: 1px solid var(--g200); background: #f9f9f9; display: flex; gap: 12px; justify-content: flex-end; flex-shrink: 0;">
+      <button style="padding: 10px 24px; border-radius: 50px; font-weight: 600; font-size: 14px; cursor: pointer; border: 1.5px solid var(--g400); background: white; color: var(--text);" onclick="closeDetailM()">Đóng</button>
+      <button id="dt-btn-register" class="bp" style="padding: 10px 28px; font-size: 14px; border: none; margin: 0;">🚀 Đăng Ký Khóa Này</button>
     </div>
   </div>
 </div>
@@ -945,33 +945,25 @@ footer{background:var(--black);border-top:1px solid rgba(26,111,196,.14);padding
 <div class="toast" id="toast"></div>
 
 <script>
-// Mobile Nav
 function toggleNav(){document.getElementById('navL').classList.toggle('open')}
 document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navL').classList.remove('open')));
 
-// Particles
 (function(){ const c=document.getElementById('particles'); for(let i=0;i<28;i++){ const p=document.createElement('div');p.className='particle'; const s=Math.random()*3+1; p.style.cssText=`width:${s}px;height:${s}px;left:${Math.random()*100}%;top:${55+Math.random()*45}%;animation-duration:${9+Math.random()*11}s;animation-delay:${Math.random()*10}s`; c.appendChild(p); } })();
 
-// Scroll Reveal
 const ro=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');ro.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -50px 0px'}); document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
 
-// Filter
 function fc(cat,btn){ document.querySelectorAll('.ctab').forEach(t=>t.classList.remove('active')); btn.classList.add('active'); document.querySelectorAll('.cc').forEach(c=>{c.style.display=(cat==='all'||c.dataset.cat===cat)?'block':'none'}); }
 
-// Modal Form
 window.openM = function(course){ document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; if(course){ document.getElementById('msub').textContent='Đăng ký: '+course; const sel=document.getElementById('m-course'); [...sel.options].forEach(o=>{if(o.text===course)o.selected=true}); } }
 window.closeM = function(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
 window.closeBg = function(e){if(e.target===document.getElementById('modal'))window.closeM()}
 
-// Toast
 function toast(msg,ok=true){ const t=document.getElementById('toast'); t.textContent=msg;t.className='toast '+(ok?'ok':'err');t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),5000); }
 
-// Discount Popup
 setTimeout(()=>document.getElementById('popup').classList.add('show'),5000);
 function closePopup(){document.getElementById('popup').classList.remove('show')}
 function copyCode(){ navigator.clipboard?.writeText('TAYNGUYENPHIM').catch(()=>{}); toast('✅ Đã sao chép mã: TAYNGUYENPHIM',true); }
 
-// Countdown
 (function(){ const end=new Date();end.setDate(end.getDate()+7);end.setHours(end.getHours()+14); function pad(n){return String(n).padStart(2,'0')} function tick(){ const d=Math.max(0,end-new Date()); document.getElementById('cd-d').textContent=pad(Math.floor(d/86400000)); document.getElementById('cd-h').textContent=pad(Math.floor(d%86400000/3600000)); document.getElementById('cd-m').textContent=pad(Math.floor(d%3600000/60000)); document.getElementById('cd-s').textContent=pad(Math.floor(d%60000/1000)); } tick();setInterval(tick,1000); })();
 document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeM()});
 </script>
@@ -992,7 +984,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeM()});
   const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
   const db = getFirestore(app);
 
-  // 1. XỬ LÝ FORM ĐĂNG KÝ
+  // 1. XỬ LÝ FORM ĐĂNG KÝ POPUP
   const popupForm = document.getElementById('popup-form');
   if (popupForm) {
     popupForm.addEventListener('submit', async (e) => {
@@ -1043,6 +1035,8 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')window.closeM()});
       
       document.getElementById('dt-btn-register').onclick = function() { window.closeDetailM(); window.openM(name); };
       document.getElementById('detail-modal').classList.add('open'); document.body.style.overflow = 'hidden';
+      
+      document.getElementById('scroll-area').scrollTop = 0;
 
       try {
         const q = query(collection(db, "khoa_hoc"), where("ten_khoa_hoc", "==", name));
